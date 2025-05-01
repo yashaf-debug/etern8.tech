@@ -1,3 +1,27 @@
+/* ===== Header & Navigation ===== */
+.site-header {
+  background: var(--color-bg-light);
+  border-bottom: 1px solid #dee2e6;
+}
+.header-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem 0;
+}
+.logo-img {
+  width: 140px;   /* Подберите оптимальный размер */
+  height: auto;
+}
+.site-nav a {
+  margin-left: 1.5rem;
+  color: var(--color-text);
+  font-weight: 500;
+  transition: color .2s;
+}
+.site-nav a:hover {
+  color: var(--color-primary);
+}
 /* ==============================
    Global & Base Styles
    ============================== */
