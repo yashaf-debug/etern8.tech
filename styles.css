@@ -427,3 +427,83 @@ h2 {
 .service-detail .container.reverse {
   flex-direction: row-reverse;
 }
+/* Cases Hero */
+.cases-hero {
+  background: var(--color-bg-light);
+  text-align: center;
+  padding: 6rem 0;
+}
+.cases-hero h1 { font-size: 2.5rem; margin-bottom: .5rem; }
+.cases-hero p { color: var(--color-text-alt); }
+
+/* Case Detail */
+.case-detail {
+  padding: 4rem 0;
+  background: var(--color-bg-alt);
+}
+.case-detail.alt-bg { background: var(--color-bg-light); }
+.case-detail h2 {
+  text-align: center;
+  margin-bottom: 2rem;
+  font-size: 2rem;
+}
+
+/* Flex layout for cases */
+.case-detail .container {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  gap: 2rem;
+}
+.case-detail .container.reverse {
+  flex-direction: row-reverse;
+}
+
+/* Media */
+.case-media {
+  flex: 1 1 400px;
+  max-width: 500px;
+}
+.case-media img {
+  width: 100%;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+/* Info */
+.case-info {
+  flex: 1 1 300px;
+  max-width: 600px;
+}
+.case-info h3 {
+  margin-top: 1.5rem;
+  margin-bottom: .5rem;
+  font-size: 1.125rem;
+  color: var(--color-text);
+}
+.case-info p {
+  margin-bottom: 1rem;
+  color: var(--color-text-alt);
+  line-height: 1.6;
+}
+.case-info ul {
+  margin: .5rem 0 1.5rem 1.25rem;
+  color: var(--color-text-alt);
+  list-style: disc;
+}
+
+/* Responsive tweaks */
+@media (max-width: 768px) {
+  .case-detail .container {
+    flex-direction: column;
+    text-align: center;
+  }
+  .case-detail .container.reverse {
+    flex-direction: column;
+  }
+  .case-media, .case-info {
+    max-width: none;
+  }
+  .case-media { order: 1; margin-bottom: 1.5rem; }
+  .case-info { order: 2; }
+}
