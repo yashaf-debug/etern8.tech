@@ -109,3 +109,48 @@ body { background: var(--bg); color: var(--text); font-family: 'Inter', sans-ser
   text-align: right;
   color: #aaa;
 }
+/* Alternating section backgrounds */
+.hero, .values, .testimonials, .contact { background: #2D2D2D; }
+.cases, .process { background: #373737; }
+
+/* Section padding and typography */
+section { padding: 5rem 0; }
+section h2 {
+  font-size: 2.5rem;
+  color: #F5F5F5;
+  margin-bottom: 3rem;
+}
+body { font-size: 18px; line-height: 1.6; }
+
+/* Cards styling */
+.card, .case, .testimonial {
+  background: #3A3A3A;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.5);
+  border-radius: 12px;
+  padding: 2rem;
+  transition: transform .3s, box-shadow .3s;
+  min-height: 380px; /* for services/cases */
+}
+.card:hover, .case:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 8px 20px rgba(0,0,0,0.6);
+}
+
+/* Grid alignment */
+.grid3, .grid5 { display: grid; gap: 2rem; justify-items: center; }
+.grid3 { grid-template-columns: repeat(auto-fit,minmax(260px,1fr)); }
+.grid5 { grid-template-columns: repeat(auto-fit,minmax(160px,1fr)); }
+
+/* Buttons */
+.btn-primary {
+  background: #1E90FF;
+  color: #FFFFFF;
+  padding: .85rem 2rem;
+  font-weight: 600;
+  border-radius: .375rem;
+  transition: background .3s, transform .3s;
+}
+.btn-primary:hover {
+  background: #39FF14;
+  transform: translateY(-2px);
+}
