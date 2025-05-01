@@ -1,0 +1,54 @@
+:root {
+  --bg: #2d2d2d;
+  --primary: #1e90ff;
+  --accent: #39ff14;
+  --white: #ffffff;
+  --text: #ffffff;
+  --max-width: 1200px;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { background: var(--bg); color: var(--text); font-family: 'Inter', sans-serif; }
+.container { max-width: var(--max-width); margin: auto; padding: 2rem; }
+
+.hero { text-align: center; padding: 4rem 0; }
+.hero .logo { width: 120px; margin-bottom: 1rem; filter: none; }
+.hero h1 { font-size: 2.5rem; margin-bottom: .5rem; }
+.hero p { font-size: 1.125rem; margin-bottom: 1.5rem; }
+.btn-primary {
+  display: inline-block; background: var(--primary); color: var(--white);
+  padding: .75rem 1.5rem; border-radius: .375rem; text-decoration: none;
+  transition: background .3s;
+}
+.btn-primary:hover { background: var(--accent); }
+
+.values { padding: 4rem 0; }
+.grid3 { display: grid; grid-template-columns: repeat(auto-fit,minmax(260px,1fr)); gap: 2rem; }
+.card { background: #383838; padding: 1.5rem; border-radius: .5rem; text-align: center; }
+.icon { font-size: 2rem; margin-bottom: .75rem; }
+.card h3 { font-size: 1.25rem; margin-bottom: .5rem; }
+.card p { margin-bottom: .5rem; }
+.card span { font-weight: bold; color: var(--accent); }
+
+.cases { padding: 4rem 0; }
+.cases h2 { text-align: center; margin-bottom: 2rem; font-size: 1.75rem; }
+.carousel { display: flex; overflow-x: auto; gap: 1rem; scroll-snap-type: x mandatory; }
+.case {
+  background: #383838; border-radius: .5rem; flex: 0 0 300px;
+  scroll-snap-align: start; padding: 1rem; text-align: center;
+}
+.case img { width: 100%; border-radius: .5rem; margin-bottom: .75rem; }
+
+.contact { padding: 4rem 0; }
+.contact h2 { text-align: center; margin-bottom: 2rem; font-size: 1.75rem; }
+.contact form {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;
+}
+.contact input, .contact textarea {
+  grid-column: span 2; padding: .75rem; border: none; border-radius: .375rem;
+  background: #383838; color: var(--text);
+}
+.contact textarea { resize: vertical; height: 120px; }
+.contact button { grid-column: span 2; }
+
+.footer { text-align: center; padding: 2rem 0; font-size: .875rem; }
