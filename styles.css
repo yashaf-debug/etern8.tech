@@ -378,23 +378,52 @@ h2 {
   font-size: 2rem;
 }
 
-/* Grid 2 for media + info */
-.grid2 {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 2rem;
+/* ==============================
+   Service Detail (flex layout)
+   ============================== */
+.service-detail .container {
+  display: flex;
+  flex-wrap: wrap;
   align-items: center;
+  gap: 2rem;
+  padding: 0 1rem;
 }
-.grid2.reverse { direction: rtl; }
-.grid2.reverse .service-info,
-.grid2.reverse .service-media { direction: ltr; }
+.service-detail.alt-bg .container {
+  padding: 0 1rem;
+}
 
+/* Медиа (картинка) */
+.service-media {
+  flex: 1 1 400px;        /* желаемая ширина */
+  max-width: 500px;
+}
 .service-media img {
   width: 100%;
+  height: auto;
   border-radius: 12px;
   box-shadow: 0 2px 8px rgba(0,0,0,0.1);
 }
+
+/* Информация (текст + кнопка) */
+.service-info {
+  flex: 1 1 300px;
+  max-width: 600px;
+}
 .service-info p {
-  margin-bottom: 1rem;
+  margin-bottom: 1.25rem;
   color: var(--color-text-alt);
+  line-height: 1.6;
+}
+.service-info strong {
+  color: var(--color-text);
+}
+.service-info .btn-primary {
+  display: inline-block;
+  margin-top: 1rem;
+}
+
+/* Реверс (для второго блока) */
+.service-detail.alt-bg .container.reverse,
+.service-detail .container.reverse {
+  flex-direction: row-reverse;
 }
