@@ -1,50 +1,190 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Etern8 Tech — GenAI & Rapid Dev Agency</title>
-  <link rel="stylesheet" href="css/style.css" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="assets/etern8_logo.png" type="image/png">
+    <title>Etern8 - Your Digital Future</title>
+    <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
-  <header class="site-header">
-    <div class="container header-inner">
-      <a href="index.html" class="logo-link">
-        <img src="assets/etern8_logo.png" alt="Etern8 Logo" class="logo-img">
-      </a>
-      <button id="menu-toggle" class="burger" aria-label="Toggle menu">☰</button>
-      <nav class="site-nav">
-        <ul class="nav-links">
-          <li><a href="#">Home</a></li>
-          <li><a href="services.html">Services</a></li>
-          <li><a href="why.html">Why Etern8</a></li>
-          <li><a href="portfolio.html">Portfolio</a></li>
-          <li><a href="about.html">About Us</a></li>
-          <li><a href="#contact">Contact</a></li>
-        </ul>
-        <div class="language-switcher">
-          <button class="lang active">EN</button>
-          <button class="lang">RU</button>
-          <button class="lang">AR</button>
+    <header>
+        <nav>
+            <div class="logo">
+                <a href="#"><img src="assets/etern8_logo.png" alt="Etern8 Logo"></a>
+            </div>
+            <ul class="nav-links">
+                <li><a href="#hero" data-translate="nav_home">Home</a></li>
+                <li><a href="#services" data-translate="nav_services">Services</a></li>
+                <li><a href="#why-etern8" data-translate="nav_why_us">Why Etern8</a></li>
+                <li><a href="#portfolio" data-translate="nav_portfolio">Portfolio</a></li>
+                <li><a href="#about" data-translate="nav_about">About Us</a></li>
+                <li><a href="#contact" data-translate="nav_contact">Contact</a></li>
+            </ul>
+            <div class="language-switcher">
+                <button data-lang="en" class="active">EN</button>
+                <button data-lang="ru">RU</button>
+                <button data-lang="ar">AR</button>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <section id="hero">
+            <div class="hero-content">
+                <h1 data-translate="hero_headline">Innovate. Build. Grow. Your Digital Future Starts with Etern8.</h1>
+                <p data-translate="hero_subheadline">We craft cutting-edge applications, websites, AI solutions, and impactful designs that elevate your brand and accelerate your success in the UAE, KSA, Russia, and beyond.</p>
+                <a href="#contact" class="cta-button" data-translate="hero_cta">Get a Free Quote</a>
+            </div>
+        </section>
+
+        <section id="services">
+            <h2 data-translate="services_headline">Our Expertise, Your Advantage</h2>
+            <p class="section-intro" data-translate="services_intro">Etern8 delivers a comprehensive suite of digital services, leveraging global talent and cutting-edge technology to bring your vision to life.</p>
+            <div class="services-grid">
+                <div class="service-item">
+                    <img src="assets/icons/app-dev.svg" alt="Application Development Icon" class="service-icon">
+                    <h3 data-translate="service1_title">Application Development</h3>
+                    <p data-translate="service1_desc">We build intuitive and scalable mobile (iOS & Android, native & cross-platform) and web applications (PWAs, SPAs) that engage users and drive business objectives.</p>
+                </div>
+                <div class="service-item">
+                    <img src="assets/icons/web-dev.svg" alt="Website Development Icon" class="service-icon">
+                    <h3 data-translate="service2_title">Website Development</h3>
+                    <p data-translate="service2_desc">From dynamic corporate websites with robust CMS to high-performance e-commerce platforms and conversion-focused landing pages, we create digital experiences that captivate and convert.</p>
+                </div>
+                <div class="service-item">
+                    <img src="assets/icons/ai-solutions.svg" alt="AI Solutions Icon" class="service-icon">
+                    <h3 data-translate="service3_title">AI Solutions</h3>
+                    <p data-translate="service3_desc">Unlock the power of Artificial Intelligence. We develop custom AI models, intelligent chatbots, data-driven analytics, and automation tools to optimize your operations and provide a competitive edge.</p>
+                </div>
+                <div class="service-item">
+                    <img src="assets/icons/design.svg" alt="Design Icon" class="service-icon">
+                    <h3 data-translate="service4_title">Design (UI/UX & Branding)</h3>
+                    <p data-translate="service4_desc">Our creative team crafts stunning UI/UX designs for web and mobile, develops memorable branding and identity packages, and produces compelling marketing collateral that resonates with your audience.</p>
+                </div>
+                <div class="service-item">
+                    <img src="assets/icons/advertising.svg" alt="Advertising Icon" class="service-icon">
+                    <h3 data-translate="service5_title">Digital Advertising & Marketing</h3>
+                    <p data-translate="service5_desc">Amplify your reach with our data-driven digital marketing strategies, including SMM, SEO/SEM, content marketing, and performance campaigns designed to maximize ROI.</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="why-etern8" class="alternate-bg">
+            <h2 data-translate="why_etern8_headline">The Etern8 Difference: Innovation, Quality, Global Reach</h2>
+            <div class="value-props-grid">
+                <div class="value-prop-item">
+                    <img src="assets/icons/global-talent.svg" alt="Global Talent Icon" class="value-prop-icon">
+                    <h3 data-translate="why_etern8_point1_title">Global Talent, Local Expertise</h3>
+                    <p data-translate="why_etern8_point1_desc">We harness the skills of top-tier freelance talent from cost-effective regions like India and Russia, combined with a deep understanding of lucrative markets such as the UAE, KSA, and Russia. This unique model ensures premium quality at competitive prices.</p>
+                </div>
+                <div class="value-prop-item">
+                    <img src="assets/icons/future-tech.svg" alt="Future Technology Icon" class="value-prop-icon">
+                    <h3 data-translate="why_etern8_point2_title">Future-Focused Technology</h3>
+                    <p data-translate="why_etern8_point2_desc">Etern8 is committed to leveraging the latest advancements in web development, AI, and design to deliver solutions that are not just current but also future-proof, giving your business a sustainable advantage.</p>
+                </div>
+                <div class="value-prop-item">
+                    <img src="assets/icons/client-centric.svg" alt="Client-Centric Icon" class="value-prop-icon">
+                    <h3 data-translate="why_etern8_point3_title">Client-Centric Approach</h3>
+                    <p data-translate="why_etern8_point3_desc">Your success is our priority. We work collaboratively with you, ensuring transparent communication and a tailored approach to meet your specific business goals and market needs.</p>
+                </div>
+                <div class="value-prop-item">
+                    <img src="assets/icons/results-driven.svg" alt="Results-Driven Icon" class="value-prop-icon">
+                    <h3 data-translate="why_etern8_point4_title">Results-Driven Solutions</h3>
+                    <p data-translate="why_etern8_point4_desc">We focus on delivering tangible results – whether it's increased engagement, higher conversions, or streamlined operations. Our solutions are designed to make a measurable impact on your bottom line.</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="portfolio">
+            <h2 data-translate="portfolio_headline">Our Vision in Action (Conceptual)</h2>
+            <p class="section-intro" data-translate="portfolio_intro">While we are a new venture assembling our portfolio, our vision is clear. We aim to deliver projects that showcase innovation, strategic thinking, and exceptional execution. Below are conceptual examples of the caliber of work Etern8 will produce.</p>
+            <div class="portfolio-grid">
+                <!-- Placeholder for 2-3 conceptual project mockups -->
+                <div class="portfolio-item">
+                    <img src="assets/mockup1.jpg" alt="Conceptual Project Mockup 1">
+                    <h3 data-translate="portfolio_item1_title">Conceptual Project Title 1</h3>
+                    <p data-translate="portfolio_item1_desc">Highlighting the challenge, our approach, and envisioned outcome for a luxury brand in UAE.</p>
+                </div>
+                <div class="portfolio-item">
+                    <img src="assets/mockup2.jpg" alt="Conceptual Project Mockup 2">
+                    <h3 data-translate="portfolio_item2_title">Conceptual Project Title 2</h3>
+                    <p data-translate="portfolio_item2_desc">AI-powered logistics solution for a KSA enterprise.</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="about" class="alternate-bg">
+            <h2 data-translate="about_headline">Meet Etern8: Redefining Digital Excellence</h2>
+            <div class="about-content">
+                <div>
+                    <h3 data-translate="about_story_title">Our Story</h3>
+                    <p data-translate="about_story_desc">Etern8 was founded with a bold vision: to bridge the gap between world-class digital talent and businesses seeking transformative solutions. We believe in the power of a global, agile team to deliver exceptional value and innovation.</p>
+                </div>
+                <div>
+                    <h3 data-translate="about_mission_title">Our Mission</h3>
+                    <p data-translate="about_mission_desc">To empower businesses in the UAE, KSA, Russia, and globally with cutting-edge, cost-effective digital products and services that drive growth and define the future.</p>
+                </div>
+                <div>
+                    <h3 data-translate="about_model_title">Our Model</h3>
+                    <p data-translate="about_model_desc">We operate on a lean, flexible model, curating teams of highly skilled freelancers from India, Russia, and other talent-rich regions. This allows us to offer unparalleled expertise and competitive pricing, focusing on delivering premium results for clients in high-growth markets.</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="testimonials">
+            <h2 data-translate="testimonials_headline">What Our Future Clients Will Say</h2>
+            <p class="section-intro" data-translate="testimonials_intro">We are dedicated to building lasting partnerships and exceeding expectations. We look forward to sharing testimonials from satisfied clients here soon.</p>
+            <div class="testimonials-grid">
+                 <!-- Placeholder for 2-3 testimonial slots -->
+                <div class="testimonial-item">
+                    <p data-translate="testimonial1_text">"Etern8 delivered an exceptional product on time and on budget. Their team was professional and highly skilled."</p>
+                    <p class="testimonial-author" data-translate="testimonial1_author">- Future Client, Tech Startup</p>
+                </div>
+                <div class="testimonial-item">
+                    <p data-translate="testimonial2_text">"Working with Etern8 was a game-changer for our business. Their innovative solutions helped us reach new heights."</p>
+                    <p class="testimonial-author" data-translate="testimonial2_author">- Future Client, E-commerce Business</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="contact">
+            <h2 data-translate="contact_headline">Ready to Start Your Next Project?</h2>
+            <p class="section-intro" data-translate="contact_subheadline">Let's discuss how Etern8 can help you achieve your digital ambitions. Contact us today for a free consultation and quote.</p>
+            <form id="contact-form">
+                <input type="text" name="name" placeholder="Name" required data-translate-placeholder="contact_form_name">
+                <input type="email" name="email" placeholder="Email" required data-translate-placeholder="contact_form_email">
+                <input type="text" name="company" placeholder="Company (Optional)" data-translate-placeholder="contact_form_company">
+                <select name="service" data-translate-placeholder="contact_form_service_placeholder">
+                    <option value="" data-translate="contact_form_service_option_default">Service of Interest</option>
+                    <option value="app-dev" data-translate="contact_form_service_option_app">Application Development</option>
+                    <option value="web-dev" data-translate="contact_form_service_option_web">Website Development</option>
+                    <option value="ai" data-translate="contact_form_service_option_ai">AI Solutions</option>
+                    <option value="design" data-translate="contact_form_service_option_design">Design</option>
+                    <option value="advertising" data-translate="contact_form_service_option_adv">Advertising</option>
+                    <option value="other" data-translate="contact_form_service_option_other">Other</option>
+                </select>
+                <textarea name="message" placeholder="Project Details" required data-translate-placeholder="contact_form_message"></textarea>
+                <button type="submit" class="cta-button" data-translate="contact_form_submit">Submit</button>
+            </form>
+            <div class="contact-info">
+                <p><strong data-translate="contact_email_label">Email:</strong> <a href="mailto:info@etern8.tech">info@etern8.tech</a></p>
+                <!-- Placeholder for Social Media Links -->
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <p data-translate="footer_copyright">Copyright © 2025 Etern8. All Rights Reserved.</p>
+        <p><a href="#" data-translate="footer_privacy">Privacy Policy</a> | <a href="#" data-translate="footer_terms">Terms of Service</a></p>
+        <p data-translate="footer_domain">etern8.tech</p>
+        <div class="language-switcher-footer">
+            <button data-lang="en" class="active">EN</button>
+            <button data-lang="ru">RU</button>
+            <button data-lang="ar">AR</button>
         </div>
-      </nav>
-    </div>
-  </header>
+    </footer>
 
-  <section id="hero" class="hero">
-    <div class="container">
-      <h1>Scale Your Business. Infinitely.</h1>
-      <p>We boost your growth with tech-forward apps, sites, AI, and design. Achieve results. Fast.</p>
-      <a href="#contact" class="btn-primary">Get Started</a>
-    </div>
-  </section>
-
-  <footer class="footer">
-    <div class="container">
-      <p>© 2025 Etern8 Tech. <a href="#">Privacy</a> · <a href="#">Terms</a></p>
-    </div>
-  </footer>
-
-  <script src="js/script.js"></script>
+    <script src="js/script.js"></script>
 </body>
 </html>
