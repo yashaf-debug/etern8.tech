@@ -5,8 +5,17 @@
     --neon-green: #39FF14;
     --space-gray: #2D2D2D;
     --pure-white: #FFFFFF;
-    --text-on-dark: var(--pure-white);
-    --text-on-light: var(--space-gray);
+    
+    /* Updated for light theme */
+    --background-primary: var(--pure-white);
+    --background-secondary: #f8f9fa; /* A very light gray for subtle section differentiation */
+    --text-primary: var(--space-gray);
+    --text-secondary: #555555; /* Slightly lighter than primary text */
+    --text-on-accent: var(--pure-white);
+    --accent-primary: var(--tech-blue);
+    --accent-secondary: var(--neon-green);
+    --border-color: #dee2e6; /* Light border color */
+
     --primary-font: 'Inter', sans-serif;
     --arabic-font: 'Noto Sans Arabic', sans-serif;
 
@@ -24,8 +33,8 @@ body {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    background-color: var(--space-gray);
-    color: var(--text-on-dark);
+    background-color: var(--background-primary);
+    color: var(--text-primary);
     line-height: 1.7;
     font-size: var(--font-size-base);
     direction: ltr; /* Default LTR, will be changed by JS for AR */
@@ -44,17 +53,18 @@ img {
 
 a {
     text-decoration: none;
-    color: var(--neon-green);
+    color: var(--accent-primary);
     transition: color 0.3s ease;
 }
 
 a:hover {
-    color: var(--tech-blue);
+    color: var(--accent-secondary);
 }
 
 h1, h2, h3, h4, h5, h6 {
     margin-bottom: 1rem;
     font-weight: 700; /* Inter Bold for headings */
+    color: var(--text-primary);
 }
 
 h1 { font-size: var(--font-size-h1); }
@@ -64,17 +74,18 @@ h3 { font-size: var(--font-size-h3); }
 p {
     font-size: var(--font-size-body);
     font-weight: 400; /* Inter Regular for body */
+    color: var(--text-secondary);
 }
 
 /**** Header & Navigation ****/
 header {
-    background-color: var(--space-gray); /* Or a slightly darker shade of space-gray */
-    color: var(--text-on-dark);
+    background-color: var(--background-primary);
+    color: var(--text-primary);
     padding: 1rem 0;
     position: sticky;
     top: 0;
     z-index: 1000;
-    box-shadow: 0 2px 10px rgba(0,0,0,0.3);
+    box-shadow: 0 2px 10px rgba(0,0,0,0.07);
 }
 
 nav {
@@ -87,7 +98,7 @@ nav {
 }
 
 .logo img {
-    height: 40px; /* Adjust as needed */
+    height: 40px; 
     width: auto;
 }
 
@@ -108,20 +119,20 @@ nav {
 }
 
 .nav-links a {
-    color: var(--text-on-dark);
+    color: var(--text-primary);
     font-size: var(--font-size-ui-accent);
     font-weight: 600; /* Inter SemiBold for UI Accents */
     transition: color 0.3s ease;
 }
 
 .nav-links a:hover {
-    color: var(--neon-green);
+    color: var(--accent-primary);
 }
 
 .language-switcher button, .language-switcher-footer button {
     background: transparent;
-    border: 1px solid var(--tech-blue);
-    color: var(--tech-blue);
+    border: 1px solid var(--accent-primary);
+    color: var(--accent-primary);
     padding: 0.5rem 0.8rem;
     margin-left: 0.5rem;
     cursor: pointer;
@@ -132,23 +143,21 @@ nav {
 }
 
 .language-switcher button.active, .language-switcher-footer button.active {
-    background-color: var(--tech-blue);
-    color: var(--pure-white);
-    border-color: var(--tech-blue);
+    background-color: var(--accent-primary);
+    color: var(--text-on-accent);
+    border-color: var(--accent-primary);
 }
 
 .language-switcher button:hover, .language-switcher-footer button:hover {
-    background-color: var(--tech-blue);
-    color: var(--pure-white);
+    background-color: var(--accent-primary);
+    color: var(--text-on-accent);
     opacity: 0.9;
 }
 
 /**** Hero Section ****/
 #hero {
-    background-color: var(--space-gray); /* Matching header or slightly different */
-    /* Consider a subtle gradient or texture if desired, or keep hero-bg.jpg with new color overlay */
-    /* background: linear-gradient(rgba(45, 45, 45, 0.85), rgba(45, 45, 45, 0.85)), url('../assets/hero-bg.jpg') no-repeat center center/cover; */
-    color: var(--text-on-dark);
+    background-color: var(--background-secondary); /* Light gray for hero */
+    color: var(--text-primary);
     text-align: center;
     padding: 80px 20px;
     min-height: 70vh;
@@ -159,7 +168,7 @@ nav {
 }
 
 #hero h1 {
-    color: var(--pure-white);
+    color: var(--text-primary);
     font-weight: 700; /* Inter Bold */
 }
 
@@ -167,64 +176,54 @@ nav {
     margin-bottom: 2.5rem;
     max-width: 750px;
     font-weight: 400; /* Inter Regular */
-    color: var(--pure-white);
-    opacity: 0.9;
+    color: var(--text-secondary);
 }
 
 .cta-button {
-    background-color: var(--tech-blue);
-    color: var(--pure-white);
+    background-color: var(--accent-primary);
+    color: var(--text-on-accent);
     padding: 1rem 2.5rem;
-    font-size: 1.1rem; /* Inter SemiBold or Bold */
+    font-size: 1.1rem; 
     border-radius: 5px;
     text-transform: uppercase;
     font-weight: 700; /* Inter Bold */
     transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
     display: inline-block;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
 }
 
 .cta-button:hover {
-    background-color: var(--neon-green);
-    color: var(--space-gray);
+    background-color: var(--accent-secondary);
+    color: var(--space-gray); /* Neon green might need dark text */
     transform: translateY(-3px);
-    box-shadow: 0 6px 20px rgba(57, 255, 20, 0.4);
+    box-shadow: 0 6px 20px rgba(57, 255, 20, 0.3);
 }
 
 /**** Sections General Styling ****/
 section {
     padding: 80px 20px;
     text-align: center;
+    background-color: var(--background-primary); /* Default white */
 }
 
-/* Alternating section backgrounds - using white for contrast if main is dark */
-section.light-bg {
-    background-color: var(--pure-white);
-    color: var(--text-on-light);
-}
-
-section.light-bg h2, section.light-bg h3 {
-    color: var(--space-gray);
-}
-
-section.light-bg .section-intro {
-    color: #555; /* Slightly lighter than space-gray for body on white */
+section.alternate-bg {
+    background-color: var(--background-secondary); /* Light gray for alternating sections */
 }
 
 section h2 {
     margin-bottom: 1.5rem;
-    color: var(--pure-white); /* Default for dark sections */
+    color: var(--text-primary);
 }
 
 .section-intro {
     font-size: 1.15rem;
-    color: var(--pure-white);
-    opacity: 0.85;
+    color: var(--text-secondary);
     max-width: 800px;
     margin: 0 auto 50px auto;
 }
 
 /**** Services Section ****/
+/* Assuming #services is on var(--background-primary) or var(--background-secondary) */
 .services-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
@@ -234,49 +233,40 @@ section h2 {
 }
 
 .service-item {
-    background-color: var(--space-gray); /* If on light-bg section, or slightly lighter gray */
-    /* if section.light-bg, then background-color: #f9f9f9 or var(--space-gray) with white text */
+    background-color: var(--background-primary); /* White cards */
     padding: 35px;
     border-radius: 8px;
-    box-shadow: 0 5px 20px rgba(0,0,0,0.15);
+    box-shadow: 0 5px 20px rgba(0,0,0,0.08);
     transition: transform 0.3s ease, box-shadow 0.3s ease;
-    border: 1px solid rgba(255,255,255,0.1); /* Subtle border for dark cards */
-}
-
-section.light-bg .service-item {
-    background-color: var(--pure-white);
-    border: 1px solid #eee;
+    border: 1px solid var(--border-color);
 }
 
 .service-item:hover {
     transform: translateY(-8px);
-    box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+    box-shadow: 0 10px 30px rgba(0,0,0,0.12);
 }
 
 .service-icon {
     width: 50px;
     height: 50px;
     margin-bottom: 20px;
-    color: var(--neon-green); /* Accent for icons */
+    color: var(--accent-secondary); /* Neon Green for icons */
 }
 
 .service-item h3 {
     font-size: 1.6rem; /* Inter Bold */
-    color: var(--pure-white); /* Default for dark sections */
+    color: var(--text-primary);
     margin-bottom: 15px;
-}
-
-section.light-bg .service-item h3 {
-    color: var(--space-gray);
 }
 
 .service-item p {
     font-size: 1rem; /* Inter Regular */
     font-weight: 400;
+    color: var(--text-secondary);
 }
 
 /**** Why Etern8 Section (Value Props) ****/
-/* Similar styling to services, adjust if needed */
+/* Assuming #why-etern8 is on var(--background-secondary) */
 .value-props-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
@@ -286,36 +276,32 @@ section.light-bg .service-item h3 {
 }
 
 .value-prop-item {
-    background-color: var(--space-gray);
+    background-color: var(--background-primary); /* White cards on light gray section */
     padding: 30px;
     border-radius: 8px;
-    box-shadow: 0 5px 20px rgba(0,0,0,0.15);
-    border: 1px solid rgba(255,255,255,0.1);
-}
-
-section.light-bg .value-prop-item {
-    background-color: var(--pure-white);
-    border: 1px solid #eee;
+    box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+    border: 1px solid var(--border-color);
 }
 
 .value-prop-icon {
     width: 45px;
     height: 45px;
     margin-bottom: 15px;
-    color: var(--neon-green);
+    color: var(--accent-secondary);
 }
 
 .value-prop-item h3 {
     font-size: 1.5rem; /* Inter Bold */
-    color: var(--pure-white);
+    color: var(--text-primary);
     margin-bottom: 10px;
 }
 
-section.light-bg .value-prop-item h3 {
-    color: var(--space-gray);
+.value-prop-item p {
+    color: var(--text-secondary);
 }
 
 /**** Portfolio Section ****/
+/* Assuming #portfolio is on var(--background-primary) */
 .portfolio-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
@@ -324,11 +310,12 @@ section.light-bg .value-prop-item h3 {
 }
 
 .portfolio-item {
-    background-color: #3a3a3a; /* Slightly lighter than space-gray for card */
+    background-color: var(--background-primary);
     border-radius: 8px;
     overflow: hidden;
-    box-shadow: 0 5px 20px rgba(0,0,0,0.15);
+    box-shadow: 0 5px 20px rgba(0,0,0,0.08);
     text-align: left;
+    border: 1px solid var(--border-color);
 }
 
 .portfolio-item img {
@@ -340,7 +327,7 @@ section.light-bg .value-prop-item h3 {
 
 .portfolio-item h3 {
     font-size: 1.4rem; /* Inter Bold */
-    color: var(--pure-white);
+    color: var(--text-primary);
     padding: 20px 20px 10px 20px;
     margin: 0;
 }
@@ -348,19 +335,11 @@ section.light-bg .value-prop-item h3 {
 .portfolio-item p {
     padding: 0 20px 20px 20px;
     font-size: 1rem; /* Inter Regular */
-    color: var(--pure-white);
-    opacity: 0.8;
+    color: var(--text-secondary);
 }
 
 /**** About Us Section ****/
-/* This section might be better on a light background for readability of mission/values */
-#about.light-bg h2, #about.light-bg h3 {
-    color: var(--space-gray);
-}
-#about.light-bg .section-intro, #about.light-bg .about-content p {
-    color: #555;
-}
-
+/* Assuming #about is on var(--background-secondary) */
 .about-content {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
@@ -371,11 +350,42 @@ section.light-bg .value-prop-item h3 {
 
 .about-content h3 {
     font-size: 1.6rem; /* Inter Bold */
-    color: var(--neon-green); /* Accent for these subheadings */
+    color: var(--accent-primary); /* Tech Blue for these subheadings */
     margin-bottom: 15px;
 }
 
+.about-content p {
+    color: var(--text-secondary);
+}
+
+.values-section h3 {
+    color: var(--text-primary);
+    margin-bottom: 20px; 
+}
+
+.values-list {
+    margin-top: 10px;
+}
+.value-item {
+    margin-bottom: 20px;
+}
+.value-item:last-child {
+    margin-bottom: 0;
+}
+
+.value-item h4 {
+    font-size: 1.25rem; 
+    font-weight: 600; /* Inter SemiBold */
+    color: var(--accent-primary); 
+    margin-bottom: 8px;
+}
+
+.value-item p {
+    color: var(--text-secondary);
+}
+
 /**** Testimonials Section ****/
+/* Assuming #testimonials is on var(--background-primary) */
 .testimonials-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
@@ -384,28 +394,30 @@ section.light-bg .value-prop-item h3 {
 }
 
 .testimonial-item {
-    background-color: var(--pure-white); /* Assuming this section is light-bg */
-    color: var(--text-on-light);
+    background-color: var(--background-secondary); /* Light gray cards on white section */
+    color: var(--text-primary);
     padding: 30px;
     border-radius: 8px;
-    box-shadow: 0 5px 20px rgba(0,0,0,0.08);
-    border-left: 5px solid var(--tech-blue);
+    box-shadow: 0 5px 20px rgba(0,0,0,0.05);
+    border-left: 5px solid var(--accent-primary);
 }
 
 .testimonial-item p:first-child {
     font-style: italic;
     margin-bottom: 15px;
     font-size: 1.1rem;
+    color: var(--text-secondary);
 }
 
 .testimonial-author {
     font-weight: 600; /* Inter SemiBold */
-    color: var(--tech-blue);
+    color: var(--accent-primary);
     text-align: right;
     font-size: 1rem;
 }
 
 /**** Contact Section ****/
+/* Assuming #contact is on var(--background-secondary) */
 #contact-form {
     max-width: 700px;
     margin: 50px auto 0 auto;
@@ -419,11 +431,7 @@ section.light-bg .value-prop-item h3 {
     font-size: 1rem;
     margin-bottom: 5px;
     display: block;
-    color: var(--pure-white); /* Assuming contact is on dark bg */
-}
-
-section.light-bg #contact-form label {
-    color: var(--space-gray);
+    color: var(--text-primary);
 }
 
 #contact-form input, 
@@ -431,20 +439,19 @@ section.light-bg #contact-form label {
 #contact-form select {
     width: 100%;
     padding: 12px;
-    border: 1px solid #555; /* Darker border for dark theme */
-    background-color: #3f3f3f; /* Dark input background */
-    color: var(--pure-white);
+    border: 1px solid var(--border-color);
+    background-color: var(--background-primary);
+    color: var(--text-primary);
     border-radius: 5px;
     font-size: 1rem;
     font-family: var(--primary-font);
 }
 
-section.light-bg #contact-form input, 
-section.light-bg #contact-form textarea, 
-section.light-bg #contact-form select {
-    border: 1px solid #ccc;
-    background-color: var(--pure-white);
-    color: var(--space-gray);
+#contact-form input:focus,
+#contact-form textarea:focus,
+#contact-form select:focus {
+    border-color: var(--accent-primary);
+    box-shadow: 0 0 0 0.2rem rgba(30, 144, 255, 0.25);
 }
 
 #contact-form textarea {
@@ -453,27 +460,27 @@ section.light-bg #contact-form select {
 }
 
 #contact-form button[type="submit"] {
-    justify-self: center; /* Center button in grid cell */
-    /* Uses .cta-button styles */
+    justify-self: center; 
 }
 
 .contact-info {
     margin-top: 40px;
     font-size: 1.1rem;
+    color: var(--text-secondary);
 }
 
 .contact-info a {
-    color: var(--neon-green);
+    color: var(--accent-primary);
 }
 
 .contact-info a:hover {
-    color: var(--tech-blue);
+    color: var(--accent-secondary);
 }
 
 /**** Footer ****/
 footer {
-    background-color: #1e1e1e; /* Even darker gray for footer */
-    color: #aaa;
+    background-color: var(--space-gray); /* Keep footer dark for contrast */
+    color: #aaa; /* Light gray text on dark footer */
     text-align: center;
     padding: 40px 20px;
     font-size: 0.95rem;
@@ -484,15 +491,31 @@ footer p {
 }
 
 footer a {
-    color: var(--tech-blue);
+    color: var(--accent-primary);
 }
 
 footer a:hover {
-    color: var(--neon-green);
+    color: var(--accent-secondary);
 }
 
 .language-switcher-footer {
     margin-top: 15px;
+}
+
+.language-switcher-footer button {
+    border-color: var(--pure-white); /* White border for buttons on dark footer */
+    color: var(--pure-white);
+}
+
+.language-switcher-footer button.active {
+    background-color: var(--pure-white);
+    color: var(--space-gray);
+    border-color: var(--pure-white);
+}
+
+.language-switcher-footer button:hover {
+    background-color: var(--pure-white);
+    color: var(--space-gray);
 }
 
 /**** RTL Specific Styles ****/
@@ -501,7 +524,7 @@ body[dir="rtl"] {
 }
 
 body[dir="rtl"] h1, body[dir="rtl"] h2, body[dir="rtl"] h3, body[dir="rtl"] h4, body[dir="rtl"] h5, body[dir="rtl"] h6, body[dir="rtl"] p, body[dir="rtl"] span, body[dir="rtl"] li, body[dir="rtl"] a, body[dir="rtl"] button, body[dir="rtl"] label, body[dir="rtl"] input, body[dir="rtl"] textarea {
-    font-family: var(--arabic-font); /* Ensure Noto Sans Arabic is applied */
+    font-family: var(--arabic-font);
 }
 
 body[dir="rtl"] header nav {
@@ -523,7 +546,7 @@ body[dir="rtl"] .about-content {
 }
 body[dir="rtl"] .testimonial-item {
     border-left: none;
-    border-right: 5px solid var(--tech-blue);
+    border-right: 5px solid var(--accent-primary);
 }
 body[dir="rtl"] .testimonial-author {
     text-align: left;
@@ -581,36 +604,4 @@ body[dir="rtl"] #contact-form {
         grid-template-columns: 1fr; /* Stack items on smaller screens */
     }
 }
-
-
-
-
-/**** About Us - Values Section Styling ****/
-.values-section h3 {
-    /* Inherits from .about-content h3 or section.light-bg .about-content h3 */
-    /* Explicitly set for consistency if needed */
-}
-section.light-bg .values-section h3 {
-    color: var(--space-gray);
-    margin-bottom: 20px; 
-}
-
-.values-list {
-    margin-top: 10px;
-}
-.value-item {
-    margin-bottom: 20px;
-}
-.value-item:last-child {
-    margin-bottom: 0;
-}
-
-.value-item h4 {
-    font-size: 1.25rem; 
-    font-weight: 600; /* Inter SemiBold */
-    color: var(--tech-blue); 
-    margin-bottom: 8px;
-}
-
-/* .value-item p will inherit text color from section.light-bg p or default section p */
 
