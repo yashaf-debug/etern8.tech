@@ -1,0 +1,451 @@
+/**** Global Styles ****/
+body {
+    font-family: 'Arial', sans-serif; /* Placeholder, will refine with a modern sans-serif font */
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    color: #333;
+    line-height: 1.6;
+    direction: ltr; /* Default LTR, will be changed by JS for AR */
+}
+
+.container {
+    width: 90%;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+img {
+    max-width: 100%;
+    height: auto;
+}
+
+a {
+    text-decoration: none;
+    color: #007bff; /* Accent color - placeholder */
+}
+
+h1, h2, h3 {
+    margin-bottom: 1rem;
+}
+
+/**** Header & Navigation ****/
+header {
+    background-color: #1A237E; /* Deep Blue/Purple */
+    color: #fff;
+    padding: 1rem 0;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 90%;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.logo a {
+    font-size: 1.8rem;
+    font-weight: bold;
+    color: #fff;
+}
+
+.nav-links {
+    list-style: none;
+    display: flex;
+    margin: 0;
+    padding: 0;
+}
+
+.nav-links li {
+    margin-left: 25px;
+}
+
+.nav-links a {
+    color: #fff;
+    font-size: 1rem;
+    transition: color 0.3s ease;
+}
+
+.nav-links a:hover {
+    color: #FF6F00; /* Vibrant Orange Accent */
+}
+
+.language-switcher button, .language-switcher-footer button {
+    background: none;
+    border: 1px solid #fff;
+    color: #fff;
+    padding: 0.5rem 0.8rem;
+    margin-left: 0.5rem;
+    cursor: pointer;
+    transition: background-color 0.3s ease, color 0.3s ease;
+    border-radius: 4px;
+}
+
+.language-switcher button.active, .language-switcher-footer button.active {
+    background-color: #FF6F00; /* Vibrant Orange Accent */
+    color: #1A237E;
+    border-color: #FF6F00;
+}
+
+.language-switcher button:hover, .language-switcher-footer button:hover {
+    background-color: #fff;
+    color: #1A237E;
+}
+
+/**** Hero Section ****/
+#hero {
+    background: linear-gradient(rgba(26, 35, 126, 0.8), rgba(26, 35, 126, 0.8)), url('../assets/hero-bg.jpg') no-repeat center center/cover; /* Placeholder BG */
+    color: #fff;
+    text-align: center;
+    padding: 100px 20px;
+    min-height: 70vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+#hero h1 {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+    font-weight: bold;
+}
+
+#hero p {
+    font-size: 1.2rem;
+    margin-bottom: 2rem;
+    max-width: 700px;
+}
+
+.cta-button {
+    background-color: #FF6F00; /* Vibrant Orange Accent */
+    color: #fff;
+    padding: 1rem 2rem;
+    font-size: 1.1rem;
+    border-radius: 5px;
+    text-transform: uppercase;
+    font-weight: bold;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    display: inline-block;
+}
+
+.cta-button:hover {
+    background-color: #E65100; /* Darker Orange */
+    transform: translateY(-2px);
+}
+
+/**** Sections General Styling ****/
+section {
+    padding: 60px 20px;
+    text-align: center;
+}
+
+section:nth-child(even) {
+    background-color: #f4f6f8; /* Light grey for alternating sections */
+}
+
+section h2 {
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
+    color: #1A237E;
+}
+
+.section-intro {
+    font-size: 1.1rem;
+    color: #555;
+    max-width: 800px;
+    margin: 0 auto 40px auto;
+}
+
+/**** Services Section ****/
+.services-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 30px;
+    text-align: left;
+    margin-top: 40px;
+}
+
+.service-item {
+    background-color: #fff;
+    padding: 30px;
+    border-radius: 8px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.service-item:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 25px rgba(0,0,0,0.12);
+}
+
+.service-icon {
+    width: 50px; /* Adjust as needed */
+    height: 50px;
+    margin-bottom: 15px;
+    /* background-color: #00BCD4; Teal Accent - for placeholder icons if not SVG */
+}
+
+.service-item h3 {
+    font-size: 1.5rem;
+    color: #1A237E;
+    margin-bottom: 10px;
+}
+
+/**** Why Etern8 Section ****/
+.value-props-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 30px;
+    text-align: left;
+    margin-top: 40px;
+}
+
+.value-prop-item {
+    background-color: #fff;
+    padding: 30px;
+    border-radius: 8px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+}
+
+.value-prop-icon {
+    width: 45px;
+    height: 45px;
+    margin-bottom: 15px;
+}
+
+.value-prop-item h3 {
+    font-size: 1.4rem;
+    color: #1A237E;
+    margin-bottom: 10px;
+}
+
+/**** Portfolio Section ****/
+.portfolio-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 30px;
+    margin-top: 40px;
+}
+
+.portfolio-item {
+    background-color: #fff;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+    text-align: left;
+}
+
+.portfolio-item img {
+    width: 100%;
+    height: 200px; /* Adjust as needed */
+    object-fit: cover;
+    display: block;
+}
+
+.portfolio-item h3 {
+    font-size: 1.3rem;
+    color: #1A237E;
+    padding: 15px 20px 5px 20px;
+    margin: 0;
+}
+
+.portfolio-item p {
+    padding: 0 20px 20px 20px;
+    font-size: 0.95rem;
+    color: #555;
+}
+
+/**** About Us Section ****/
+#about {
+    background-color: #1A237E; /* Deep Blue/Purple */
+    color: #fff;
+}
+
+#about h2 {
+    color: #fff;
+}
+
+#about .section-intro {
+    color: #eee;
+}
+
+.about-content {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 40px;
+    text-align: left;
+    margin-top: 40px;
+    color: #f0f0f0;
+}
+
+.about-content h3 {
+    font-size: 1.5rem;
+    color: #FF6F00; /* Vibrant Orange Accent */
+    margin-bottom: 10px;
+}
+
+/**** Testimonials Section ****/
+.testimonials-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 30px;
+    margin-top: 40px;
+}
+
+.testimonial-item {
+    background-color: #fff;
+    padding: 30px;
+    border-radius: 8px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+    border-left: 5px solid #00BCD4; /* Teal Accent */
+}
+
+.testimonial-item p:first-child {
+    font-style: italic;
+    color: #555;
+    margin-bottom: 15px;
+}
+
+.testimonial-author {
+    font-weight: bold;
+    color: #1A237E;
+    text-align: right;
+}
+
+/**** Contact Section ****/
+#contact-form {
+    max-width: 700px;
+    margin: 40px auto 0 auto;
+    display: grid;
+    gap: 20px;
+    text-align: left;
+}
+
+#contact-form input, 
+#contact-form textarea, 
+#contact-form select {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 1rem;
+}
+
+#contact-form textarea {
+    min-height: 120px;
+    resize: vertical;
+}
+
+#contact-form button[type="submit"] {
+    justify-self: center; /* Center button in grid cell */
+}
+
+.contact-info {
+    margin-top: 30px;
+    font-size: 1.1rem;
+}
+
+.contact-info a {
+    color: #1A237E;
+}
+
+.contact-info a:hover {
+    color: #FF6F00;
+}
+
+/**** Footer ****/
+footer {
+    background-color: #101850; /* Darker Blue/Purple */
+    color: #ccc;
+    text-align: center;
+    padding: 30px 20px;
+    font-size: 0.9rem;
+}
+
+footer p {
+    margin-bottom: 0.5rem;
+}
+
+footer a {
+    color: #00BCD4; /* Teal Accent */
+}
+
+footer a:hover {
+    color: #fff;
+}
+
+.language-switcher-footer {
+    margin-top: 10px;
+}
+
+/**** RTL Specific Styles ****/
+body[dir="rtl"] header nav {
+    flex-direction: row-reverse;
+}
+body[dir="rtl"] .nav-links li {
+    margin-left: 0;
+    margin-right: 25px;
+}
+body[dir="rtl"] .language-switcher button, 
+body[dir="rtl"] .language-switcher-footer button {
+    margin-left: 0;
+    margin-right: 0.5rem;
+}
+body[dir="rtl"] .services-grid, 
+body[dir="rtl"] .value-props-grid, 
+body[dir="rtl"] .about-content {
+    text-align: right;
+}
+body[dir="rtl"] .testimonial-item {
+    border-left: none;
+    border-right: 5px solid #00BCD4; /* Teal Accent */
+}
+body[dir="rtl"] .testimonial-author {
+    text-align: left;
+}
+body[dir="rtl"] #contact-form {
+    text-align: right;
+}
+
+/**** Responsive Design ****/
+@media (max-width: 768px) {
+    nav {
+        flex-direction: column;
+    }
+    .nav-links {
+        margin-top: 1rem;
+        flex-direction: column;
+        align-items: center;
+    }
+    .nav-links li {
+        margin: 0.5rem 0;
+        margin-left: 0; /* Reset margin for column layout */
+    }
+    .language-switcher {
+        margin-top: 1rem;
+    }
+    #hero h1 {
+        font-size: 2.2rem;
+    }
+    #hero p {
+        font-size: 1rem;
+    }
+    section h2 {
+        font-size: 2rem;
+    }
+    .services-grid,
+    .value-props-grid,
+    .portfolio-grid,
+    .testimonials-grid,
+    .about-content {
+        grid-template-columns: 1fr; /* Stack items on smaller screens */
+    }
+}
+
