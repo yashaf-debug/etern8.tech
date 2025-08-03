@@ -101,3 +101,30 @@ a:hover{color:var(--primary-dark)}
   .case-flex,.case-flex.reverse{flex-direction:column}
   .case-img{max-width:100%}
 }
+
+/* --- Services page --- */
+.services-cards{display:grid;grid-template-columns:1fr;gap:1.2rem;padding:2.5rem 0}
+.service-card{display:flex;gap:1rem;align-items:flex-start;background:#fff;border-radius:12px;padding:1.2rem;box-shadow:0 2px 8px rgba(0,0,0,.06)}
+.svc-icon{flex:0 0 56px;height:56px;border-radius:12px;display:grid;place-items:center}
+.svc-chat{background:rgba(30,144,255,.12);color:#1E90FF}
+.svc-landing{background:rgba(76,175,80,.12);color:#2e7d32}
+.svc-ai{background:rgba(255,193,7,.16);color:#996800}
+.svgicon{width:28px;height:28px}
+.svc-body h2{font-size:1.25rem;margin-bottom:.25rem}
+.svc-body p{color:var(--muted);margin-bottom:.45rem}
+
+/* --- Cases page --- */
+.case-cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:1rem;padding:2.5rem 0}
+.case-card{background:#fff;border-radius:12px;padding:1.2rem;box-shadow:0 2px 8px rgba(0,0,0,.06)}
+.case-card h2{font-size:1.2rem;margin-bottom:.3rem}
+.case-card h3{margin-top:.7rem;margin-bottom:.25rem;font-size:1rem}
+.case-card ul{margin:.25rem 0 0 1.2rem}
+.case-badge{display:inline-block;background:rgba(30,144,255,.08);color:#1E90FF;border:1px solid rgba(30,144,255,.25);font-size:.75rem;border-radius:999px;padding:.2rem .6rem;margin-bottom:.4rem}
+
+/* Sub-hero reused */
+.hero-sub{padding:4.5rem 0;background:#fff}
+
+/* Responsive */
+@media (min-width: 900px){
+  .services-cards{grid-template-columns:1fr}
+}
