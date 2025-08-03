@@ -5,14 +5,14 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Services — Etern8 Tech</title>
   <meta name="description" content="Business chatbots, high-converting landing pages, and AI integration. Launch fast with Etern8 Tech.">
-  <link rel="stylesheet" href="/css/styles.css?v=1" />
+  <link rel="stylesheet" href="css/styles.css" />
 </head>
 <body>
-  <!-- Header (как на index) -->
+  <!-- Header -->
   <header class="site-header">
     <div class="container header-inner">
       <a href="index.html" class="logo-link" aria-label="Etern8 Tech">
-        <img src="assets/etern8_logo.png" alt="Etern8 Tech logo" class="logo-img">
+        <img src="assets/logo.svg" alt="Etern8 Tech logo" class="logo-img">
       </a>
       <button id="menu-toggle" class="burger" aria-label="Toggle menu" aria-expanded="false">☰</button>
       <nav class="site-nav" id="site-nav">
@@ -40,46 +40,54 @@
     </div>
   </section>
 
-  <!-- Service 1 -->
-  <section class="service-detail">
-    <div class="container service-flex">
-      <div class="service-media"><img src="assets/business_chatbots.png" alt="Business Chatbots"></div>
-      <div class="service-info">
+  <section class="container services-cards">
+    <!-- Card 1 -->
+    <article class="service-card">
+      <div class="svc-icon svc-chat">
+        <!-- chat bubbles -->
+        <svg viewBox="0 0 24 24" class="svgicon" aria-hidden="true"><path d="M2 6.5A3.5 3.5 0 0 1 5.5 3h7A3.5 3.5 0 0 1 16 6.5v3A3.5 3.5 0 0 1 12.5 13H8l-3.5 2V9.5A3.5 3.5 0 0 1 2 6.5Z" fill="currentColor"/><path d="M9 10.5A3.5 3.5 0 0 1 12.5 7h6A3.5 3.5 0 0 1 22 10.5v5l-3.5-2h-3A3.5 3.5 0 0 1 12 10.5" opacity=".25" fill="currentColor"/></svg>
+      </div>
+      <div class="svc-body">
         <h2>Business Chatbots</h2>
         <p><strong>What we do:</strong> Telegram/WhatsApp/Web chatbots, CRM integration, handoff to agent.</p>
         <p><strong>Tech stack:</strong> Node.js, Python, Dialogflow, GPT-4.</p>
         <p><strong>Process:</strong> Brief → Sprint 0 → Dev sprints → QA → Launch.</p>
         <a href="index.html#contact" class="btn-primary">Get Started</a>
       </div>
-    </div>
-  </section>
+    </article>
 
-  <!-- Service 2 (reversed) -->
-  <section class="service-detail alt">
-    <div class="container service-flex reverse">
-      <div class="service-media"><img src="assets/landing_pages.png" alt="Landing Pages"></div>
-      <div class="service-info">
+    <!-- Card 2 -->
+    <article class="service-card">
+      <div class="svc-icon svc-landing">
+        <!-- monitor -->
+        <svg viewBox="0 0 24 24" class="svgicon" aria-hidden="true"><path d="M3 5h18v10H3zM9 19h6" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"/></svg>
+      </div>
+      <div class="svc-body">
         <h2>Landing Pages</h2>
         <p><strong>What we do:</strong> High-converting one-pagers on Webflow/Tilda/custom HTML.</p>
         <p><strong>Tech stack:</strong> Webflow CMS, HTML5, CSS3, GSAP.</p>
         <p><strong>Process:</strong> UX → Dev → Optimization → A/B testing.</p>
         <a href="index.html#contact" class="btn-primary">Get Started</a>
       </div>
-    </div>
-  </section>
+    </article>
 
-  <!-- Service 3 -->
-  <section class="service-detail">
-    <div class="container service-flex">
-      <div class="service-media"><img src="assets/ai_integration.png" alt="AI Integration"></div>
-      <div class="service-info">
+    <!-- Card 3 -->
+    <article class="service-card">
+      <div class="svc-icon svc-ai">
+        <!-- ai chip -->
+        <svg viewBox="0 0 24 24" class="svgicon" aria-hidden="true">
+          <rect x="7" y="7" width="10" height="10" rx="2" stroke="currentColor" stroke-width="2" fill="none"/>
+          <path d="M4 9h3M4 15h3M17 4v3M7 4v3M20 9h-3M20 15h-3M17 17v3M7 17v3" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+        </svg>
+      </div>
+      <div class="svc-body">
         <h2>AI Integration</h2>
         <p><strong>What we do:</strong> Content generation, analytics, predictive models.</p>
         <p><strong>Tech stack:</strong> Llama-3, LangChain, Pinecone, AWS.</p>
         <p><strong>Process:</strong> Data intake → fine-tuning → integration → monitoring.</p>
         <a href="index.html#contact" class="btn-primary">Get Started</a>
       </div>
-    </div>
+    </article>
   </section>
 
   <footer class="footer">
@@ -88,6 +96,6 @@
     </div>
   </footer>
 
-  <script src="/js/script.js?v=1"></script>
+  <script src="js/script.js"></script>
 </body>
 </html> 
