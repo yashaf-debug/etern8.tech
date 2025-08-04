@@ -127,14 +127,15 @@
   <section id="contact" class="contact">
     <div class="container">
       <h2>Связаться с нами</h2>
-      <form id="brief-form">
-        <input type="text" name="name" placeholder="Имя" required />
-        <input type="email" name="email" placeholder="Email" required />
-        <input type="text" name="project" placeholder="Проект" required />
-        <input type="text" name="budget" placeholder="Бюджет (USD)" />
+      <form id="brief-form" method="post" novalidate>
+        <input type="text" name="company" autocomplete="off" tabindex="-1" aria-hidden="true" style="display:none">
+        <input type="text"  name="name"    placeholder="Имя" required>
+        <input type="email" name="email"   placeholder="Email" required>
+        <input type="text"  name="project" placeholder="Проект" required>
+        <input type="text"  name="budget"  placeholder="Бюджет (USD)">
         <textarea name="message" placeholder="Сообщение"></textarea>
-        <label class="policy"><input type="checkbox" required /> Я согласен с политикой конфиденциальности.</label>
-        <button type="submit" class="btn-primary">Оставить заявку</button>
+        <label class="policy"><input type="checkbox" required> Я согласен с Политикой конфиденциальности.</label>
+        <button type="submit" class="btn-primary">Отправить бриф</button>
       </form>
     </div>
   </section>
