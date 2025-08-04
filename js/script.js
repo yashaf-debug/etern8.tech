@@ -1,3 +1,11 @@
+(function () {
+  const isRU = location.pathname.startsWith('/ru/');
+  document.querySelectorAll('.language-switcher .lang').forEach(a => {
+    const t = a.textContent.trim();
+    a.classList.toggle('active', (isRU && t === 'RU') || (!isRU && t === 'EN'));
+  });
+})();
+
 document.addEventListener('DOMContentLoaded', () => {
   // Burger toggle
   const burger = document.getElementById('menu-toggle');
@@ -13,18 +21,21 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // Brief form -> mailto (работает без сторонних сервисов)
   const form = document.getElementById('brief-form');
   if (form) {
-    form.addEventListener('submit', (e) => {
-      e.preventDefault();
-      const data = new FormData(form);
-      const to = 'hello@etern8.tech'; // при необходимости замените
-      const subject = encodeURIComponent('New Brief — Etern8 Tech');
-      const body = encodeURIComponent(
-        `Name: ${data.get('name')}\nEmail: ${data.get('email')}\nProject: ${data.get('project')}\nBudget: ${data.get('budget')}\nMessage:\n${data.get('message') || ''}`
-      );
-      window.location.href = `mailto:${to}?subject=${subject}&body=${body}`;
+    const API_URL = '/api/brief';
+    const submitBtn = form.querySelector('button[type="submit"]');
+    const notice = document.createElement('div'); notice.style.marginTop='10px'; notice.style.fontSize='.95rem'; form.appendChild(notice);
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault(); notice.textContent=''; submitBtn.disabled = true;
+      const data = Object.fromEntries(new FormData(form).entries());
+      data.pageUrl = window.location.href; data.timestamp = new Date().toISOString();
+      try {
+        const res = await fetch(API_URL, { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify(data) });
+        if (!res.ok) throw new Error('Bad status '+res.status);
+        notice.style.color='#2e7d32'; notice.textContent='Thanks! We received your brief. We’ll reply within 24 hours.'; form.reset();
+      } catch(err){ console.error(err); notice.style.color='#c62828'; notice.textContent='Oops. Please try again or email hello@etern8.tech.'; }
+      finally{ submitBtn.disabled=false; }
     });
   }
 });

@@ -39,9 +39,8 @@
           <li><a href="#contact">Contact</a></li>
         </ul>
         <div class="language-switcher">
-          <button class="lang active" type="button">EN</button>
-          <button class="lang" type="button">RU</button>
-          <button class="lang" type="button">AR</button>
+          <a class="lang" href="/">EN</a>
+          <a class="lang" href="/ru/">RU</a>
         </div>
       </nav>
     </div>
@@ -129,13 +128,14 @@
   <section id="contact" class="contact">
     <div class="container">
       <h2>Let's Talk</h2>
-      <form id="brief-form">
-        <input type="text" name="name" placeholder="Name" required />
-        <input type="email" name="email" placeholder="Email" required />
-        <input type="text" name="project" placeholder="Project" required />
-        <input type="text" name="budget" placeholder="Budget Range (USD)" />
+      <form id="brief-form" method="post" novalidate>
+        <input type="text" name="company" autocomplete="off" tabindex="-1" aria-hidden="true" style="display:none">
+        <input type="text"  name="name"    placeholder="Name" required>
+        <input type="email" name="email"   placeholder="Email" required>
+        <input type="text"  name="project" placeholder="Project" required>
+        <input type="text"  name="budget"  placeholder="Budget Range (USD)">
         <textarea name="message" placeholder="Message"></textarea>
-        <label class="policy"><input type="checkbox" required /> I agree with the Privacy Policy.</label>
+        <label class="agree"><input type="checkbox" required> I agree with the Privacy Policy.</label>
         <button type="submit" class="btn-primary">Send Brief</button>
       </form>
     </div>

@@ -29,6 +29,7 @@ a:hover{color:var(--primary-dark)}
 .hero p{color:var(--muted);font-size:1.15rem;margin:0 auto 2rem;max-width:700px}
 .btn-primary{display:inline-block;background:var(--primary);color:#fff;padding:.9rem 1.9rem;border-radius:.45rem;font-weight:700;box-shadow:0 8px 18px rgba(30,144,255,.25);transition:transform .2s, background .2s}
 .btn-primary:hover{background:var(--primary-dark);transform:translateY(-2px)}
+.btn-primary[disabled]{opacity:.7;cursor:not-allowed}
 
 /* Tiles (one row) */
 .services-tiles{background:var(--bg-alt);padding:5rem 0}
