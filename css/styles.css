@@ -19,7 +19,7 @@ a:hover{color:var(--primary-dark)}
 .nav-links{list-style:none;display:flex;gap:1.5rem}
 .nav-links a{font-weight:600}
 .language-switcher{display:flex;gap:.5rem}
-.language-switcher .lang{border:2px solid var(--primary);background:none;padding:.35rem .7rem;border-radius:.4rem;cursor:pointer}
+.language-switcher .lang{display:inline-block;border:2px solid var(--primary);padding:.35rem .7rem;border-radius:.4rem;font-weight:600;text-decoration:none}
 .language-switcher .lang.active{background:var(--primary);color:#fff}
 
 /* Hero */
