@@ -1,7 +1,7 @@
 export async function onRequestPost({ request, env }) {
   try {
     const origin = request.headers.get('origin') || '';
-    const allowed = (env.ORIGIN_ALLOWED || '').split(',').map(s=>s.trim());
+    const allowed = (env.ORIGIN_ALLOWED || '').split(',').map(s=>s.trim()).filter(Boolean);
     if (origin && allowed.length && !allowed.includes(origin)) return new Response('Forbidden origin',{status:403});
     const body = await request.json();
     if (body.company) return new Response('OK',{status:200}); // honeypot
