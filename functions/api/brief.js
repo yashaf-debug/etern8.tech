@@ -23,7 +23,21 @@ Message: ${message}
 Page: ${pageUrl}
 Time: ${timestamp}`}]
     };
-    await fetch('https://api.mailchannels.net/tx/v1/send',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify(mailPayload)});
+    const mailRes = await fetch('https://api.mailchannels.net/tx/v1/send',{
+      method:'POST',
+      headers:{'content-type':'application/json'},
+      body:JSON.stringify(mailPayload)
+    });
+    const mailText = await mailRes.text();
+
+    if (!mailRes.ok) {
+      console.log('MailChannels error:', mailRes.status, mailText);
+      return new Response(JSON.stringify({ ok:false, stage:'mail', status: mailRes.status, error: mailText }), {
+        status: 502,
+        headers: { 'content-type': 'application/json', 'access-control-allow-origin': origin || '*' }
+      });
+    }
+
     if (env.TELEGRAM_TOKEN && env.TELEGRAM_CHAT_ID) {
       const text=`New lead:
 Name: ${name}
@@ -41,7 +55,10 @@ ${message?`Message: ${message}\n`:''}${pageUrl?`Page: ${pageUrl}\n`:''}Time: ${t
           Page:{url: pageUrl||'https://etern8.tech'}, Time:{date:{start: timestamp}}
         }})});
     }
-    return new Response(JSON.stringify({ok:true}),{status:200,headers:{'content-type':'application/json','access-control-allow-origin':origin||'*'}});
+    return new Response(
+      JSON.stringify({ ok:true, mail:{ status: mailRes.status } }),
+      { status:200, headers:{ 'content-type':'application/json','access-control-allow-origin': origin || '*' } }
+    );
   } catch(e){ console.error(e); return new Response('Server error',{status:500}); }
 }
 export function onRequestOptions({ request }) {
