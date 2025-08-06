@@ -39,9 +39,11 @@ export async function onRequestPost({ request, env }) {
     ].filter(Boolean).join('\n');
 
     const mail = await sendMailViaMC({
-      fromEmail: MAIL_FROM,
-      toEmail  : MAIL_TO,
-      subject  : `New Brief — ${req.project} — ${req.name}`,
+      fromEmail  : MAIL_FROM,
+      toEmail    : MAIL_TO,
+      replyToEmail: req.email,
+      replyToName : req.name,
+      subject    : `New Brief — ${req.project} — ${req.name}`,
       text
     });
 
@@ -55,6 +57,7 @@ export async function onRequestPost({ request, env }) {
     return json({
       ok: mail.status === 202,
       stage: 'mail',
+      httpStatus: mail.status,
       mail: { status: mail.status, server: mail.server, body: mail.body.slice(0, 400) },
       tg,
       received: req

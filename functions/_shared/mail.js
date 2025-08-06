@@ -1,7 +1,18 @@
-export async function sendMailViaMC({ fromEmail, fromName, toEmail, toName, subject, text }) {
+export async function sendMailViaMC({
+  fromEmail,
+  fromName,
+  toEmail,
+  toName,
+  replyToEmail,
+  replyToName,
+  subject,
+  text
+}) {
   const payload = {
     personalizations: [{ to: [{ email: toEmail, name: toName || 'Etern8 Inbound' }] }],
     from: { email: fromEmail, name: fromName || 'Etern8 Tech' },
+    reply_to: replyToEmail ? { email: replyToEmail, name: replyToName || '' } : undefined,
+    sender_domain: fromEmail?.split('@')[1],
     subject,
     content: [{ type: 'text/plain', value: text }]
   };

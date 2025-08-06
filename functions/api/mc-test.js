@@ -22,6 +22,7 @@ export async function onRequestPost({ env }) {
 
   return new Response(JSON.stringify({
     ok: mail.status === 202,
+    httpStatus: mail.status,
     mail: { status: mail.status, server: mail.server, body: mail.body.slice(0, 400) },
     tg
   }), { headers: { 'content-type': 'application/json' }});
