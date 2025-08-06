@@ -1,12 +1,9 @@
-export async function sendMailViaMC({ fromEmail, fromName, toEmail, toName, subject, text, replyToEmail, replyToName }) {
+export async function sendMailViaMC({ fromEmail, fromName, toEmail, toName, subject, text }) {
   const payload = {
-    personalizations: [
-      { to: [ { email: toEmail, name: toName || 'Etern8 Inbound' } ] }
-    ],
+    personalizations: [{ to: [{ email: toEmail, name: toName || 'Etern8 Inbound' }] }],
     from: { email: fromEmail, name: fromName || 'Etern8 Tech' },
     subject,
-    content: [{ type: 'text/plain', value: text }],
-    ...(replyToEmail ? { reply_to: { email: replyToEmail, name: replyToName || replyToEmail } } : {})
+    content: [{ type: 'text/plain', value: text }]
   };
 
   const res = await fetch('https://api.mailchannels.net/tx/v1/send', {
@@ -16,5 +13,6 @@ export async function sendMailViaMC({ fromEmail, fromName, toEmail, toName, subj
   });
 
   const body = await res.text();
-  return { status: res.status, body };
+  const server = res.headers.get('server') || '';
+  return { status: res.status, body, server };
 }
