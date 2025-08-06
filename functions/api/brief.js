@@ -20,6 +20,32 @@ export async function onRequestPost(ctx) {
   }
 }
 
+const MC_URLS = [
+  'https://cf.mailchannels.net/tx/v1/send',
+  'https://api.mailchannels.net/tx/v1/send', // fallback
+];
+
+async function sendViaMailChannels(payload, signal) {
+  let last;
+  for (const url of MC_URLS) {
+    try {
+      const res = await fetch(url, {
+        method: 'POST',
+        headers: { 'content-type': 'application/json' },
+        body: JSON.stringify(payload),
+        signal,
+      });
+      const text = await res.text().catch(() => '');
+      if (res.ok) return { ok: true, status: res.status, body: text };
+      if (res.status !== 401) return { ok: false, status: res.status, body: text };
+      last = { ok: false, status: res.status, body: text };
+    } catch (e) {
+      last = { ok: false, status: 0, body: String(e) };
+    }
+  }
+  return last || { ok: false, status: 0, body: 'No attempt made' };
+}
+
 async function handle({ request, env }) {
   const origin   = request.headers.get('origin') || '';
   const allowed  = (env.ORIGIN_ALLOWED || '').split(',').map(s => s.trim()).filter(Boolean);
@@ -89,17 +115,11 @@ Message: ${message}
 Page: ${pageUrl}
 Time: ${timestamp}` }]
     };
-    const res = await fetch('https://api.mailchannels.net/tx/v1/send', {
-      method: 'POST',
-      headers: { 'content-type': 'application/json' },
-      body: JSON.stringify(payload),
-      signal: controller.signal
-    });
+    const res = await sendViaMailChannels(payload, controller.signal);
     clearTimeout(timer);
-    const text = await res.text().catch(() => '');
     if (!res.ok) {
-      console.error('mail error:', res.status, text.slice(0, 200));
-      return json({ request, env }, 200, { ok: false, stage: 'mail', httpStatus: res.status, error: text.slice(0, 200) });
+      console.error('mail error:', res.status, res.body.slice(0, 200));
+      return json({ request, env }, 200, { ok: false, stage: 'mail', httpStatus: res.status, error: res.body.slice(0, 200) });
     }
   } catch (e) {
     const isAbort = String(e).includes('AbortError');
