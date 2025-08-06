@@ -20,30 +20,28 @@ export async function onRequestPost(ctx) {
   }
 }
 
-const MC_URLS = [
-  'https://cf.mailchannels.net/tx/v1/send',
-  'https://api.mailchannels.net/tx/v1/send', // fallback
-];
-
-async function sendViaMailChannels(payload, signal) {
-  let last;
-  for (const url of MC_URLS) {
-    try {
-      const res = await fetch(url, {
-        method: 'POST',
-        headers: { 'content-type': 'application/json' },
-        body: JSON.stringify(payload),
-        signal,
-      });
-      const text = await res.text().catch(() => '');
-      if (res.ok) return { ok: true, status: res.status, body: text };
-      if (res.status !== 401) return { ok: false, status: res.status, body: text };
-      last = { ok: false, status: res.status, body: text };
-    } catch (e) {
-      last = { ok: false, status: 0, body: String(e) };
+async function sendViaMailChannels(payload, clientIp) {
+  const URL = 'https://api.mailchannels.net/tx/v1/send';
+  try {
+    const headers = { 'content-type': 'application/json' };
+    if (clientIp) {
+      headers['CF-Connecting-IP'] = clientIp;
+      headers['X-Forwarded-For']  = clientIp;
     }
+    // опционально: полезные идентификаторы
+    headers['X-Entity-Ref-ID'] = crypto.randomUUID?.() || `${Date.now()}`;
+    headers['X-Mailer']        = 'Etern8-Worker';
+
+    const res  = await fetch(URL, {
+      method: 'POST',
+      headers,
+      body: JSON.stringify(payload)
+    });
+    const text = await res.text().catch(() => '');
+    return { ok: res.ok, status: res.status, body: text };
+  } catch (e) {
+    return { ok: false, status: 0, body: String(e) };
   }
-  return last || { ok: false, status: 0, body: 'No attempt made' };
 }
 
 async function handle({ request, env }) {
@@ -96,16 +94,17 @@ async function handle({ request, env }) {
     return json({ request, env }, 200, { ok: true, bypass: true, received: { name, email, project, budget, message, pageUrl, timestamp } });
   }
 
-  // Отправка письма (MailChannels) с таймаутом, любые ошибки -> JSON 200
-  try {
-    const controller = new AbortController();
-    const timer = setTimeout(() => controller.abort(), 8000);
-    const payload = {
-      personalizations: [{ to: [{ email: MAIL_TO }] }],
-      from: { email: MAIL_FROM, name: 'Etern8 Tech' },
-      headers: { 'Reply-To': email },
-      subject: `New Brief — ${name} / ${project}`,
-      content: [{ type: 'text/plain', value:
+  // Отправка письма (MailChannels)
+  const ip = request.headers.get('CF-Connecting-IP') || request.headers.get('x-real-ip');
+
+  const payload = {
+    personalizations: [{ to: [{ email: MAIL_TO }] }],
+    from: { email: MAIL_FROM, name: 'Etern8 Tech' },
+    headers: { 'Reply-To': email },
+    subject: `New Brief — ${name} / ${project}`,
+    content: [{
+      type: 'text/plain',
+      value:
 `Name: ${name}
 Email: ${email}
 Project: ${project}
@@ -113,18 +112,19 @@ Budget: ${budget}
 Message: ${message}
 
 Page: ${pageUrl}
-Time: ${timestamp}` }]
-    };
-    const res = await sendViaMailChannels(payload, controller.signal);
-    clearTimeout(timer);
-    if (!res.ok) {
-      console.error('mail error:', res.status, res.body.slice(0, 200));
-      return json({ request, env }, 200, { ok: false, stage: 'mail', httpStatus: res.status, error: res.body.slice(0, 200) });
-    }
-  } catch (e) {
-    const isAbort = String(e).includes('AbortError');
-    console.error(isAbort ? 'mail-timeout' : 'mail-fetch', e);
-    return json({ request, env }, 200, { ok: false, stage: isAbort ? 'mail-timeout' : 'mail-fetch', error: String(e) });
+Time: ${timestamp}`
+    }]
+  };
+
+  const mailRes = await sendViaMailChannels(payload, ip);
+  if (!mailRes.ok) {
+    // не роняем 5xx наружу, возвращаем ясную причину
+    return json({ request, env }, 200, {
+      ok: false,
+      stage: 'mail',
+      httpStatus: mailRes.status,
+      error: mailRes.body?.slice?.(0, 200) || String(mailRes.body)
+    });
   }
 
   // Telegram — не блокируем ответ
