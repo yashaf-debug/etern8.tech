@@ -1,5 +1,4 @@
-// functions/api/brief.js
-// Robust handler with health mode, safe parsing and explicit MailChannels errors.
+// functions/api/brief.js — production handler without health mode
 
 export async function onRequestOptions({ request }) {
   const origin = request.headers.get('origin') || '*';
@@ -13,95 +12,58 @@ export async function onRequestOptions({ request }) {
   });
 }
 
-export async function onRequestPost(context) {
-  const { request, env } = context;
+export async function onRequestPost({ request, env }) {
   const origin = request.headers.get('origin') || '';
   const allowed = (env.ORIGIN_ALLOWED || '').split(',').map(s => s.trim()).filter(Boolean);
-  const headersJSON = (o = {}) => ({
-    'content-type': 'application/json',
-    'access-control-allow-origin': origin || '*',
-    ...o
-  });
+  const jsonHeaders = { 'content-type': 'application/json', 'access-control-allow-origin': origin || '*' };
 
   try {
-    // CORS allow-list (skip if not configured)
     if (origin && allowed.length && !allowed.includes(origin)) {
-      return new Response(JSON.stringify({ ok: false, stage: 'cors', error: 'Forbidden origin', origin, allowed }), {
-        status: 403, headers: headersJSON()
-      });
+      return new Response(JSON.stringify({ ok:false, stage:'cors', origin, allowed }), { status:403, headers: jsonHeaders });
     }
 
-    // --- HEALTH MODE ---
-   // If HEALTH_MODE=1 -> just echo back; helps verify that the function runs and CORS is fine.
-    if (String(env.HEALTH_MODE || '') === '1') {
-      return new Response(JSON.stringify({ ok: true, health: true, note: 'Function is alive' }), {
-        status: 200, headers: headersJSON()
-      });
-    }
-
-    // --- SAFE BODY PARSE (JSON or formdata) ---
+    // --- parse body safely (json or form) ---
     const ct = (request.headers.get('content-type') || '').toLowerCase();
     let body = {};
     try {
       if (ct.includes('application/json')) {
         body = await request.json();
-      } else if (ct.includes('application/x-www-form-urlencoded')) {
+      } else {
         const form = await request.formData();
         body = Object.fromEntries(form.entries());
-      } else {
-        // attempt formData fallback
-        try {
-          const form = await request.formData();
-          body = Object.fromEntries(form.entries());
-        } catch (_) {
-          body = {};
-        }
       }
     } catch (e) {
-      return new Response(JSON.stringify({ ok:false, stage:'parse', error: String(e) }), {
-        status: 400, headers: headersJSON()
-      });
+      return new Response(JSON.stringify({ ok:false, stage:'parse', error:String(e) }), { status:400, headers: jsonHeaders });
     }
 
     // honeypot
     if (body.company) {
-      return new Response(JSON.stringify({ ok: true, spam: true }), {
-        status: 200, headers: headersJSON()
-      });
+      return new Response(JSON.stringify({ ok:true, spam:true }), { status:200, headers: jsonHeaders });
     }
 
-    const name = (body.name || '').trim();
-    const email = (body.email || '').trim();
+    const name    = (body.name    || '').trim();
+    const email   = (body.email   || '').trim();
     const project = (body.project || '').trim();
-    const budget = (body.budget || '').trim();
+    const budget  = (body.budget  || '').trim();
     const message = (body.message || '').trim();
     const pageUrl = (body.pageUrl || '').trim();
     const timestamp = body.timestamp || new Date().toISOString();
 
     if (!name || !email || !project) {
-      return new Response(JSON.stringify({ ok:false, stage:'validate', error:'Missing required fields', fields:{ name:!!name, email:!!email, project:!!project } }), {
-        status: 400, headers: headersJSON()
-      });
+      return new Response(JSON.stringify({ ok:false, stage:'validate', error:'Missing required fields', fields:{ name:!!name, email:!!email, project:!!project } }), { status:400, headers: jsonHeaders });
     }
 
-    // --- ENV VALIDATION ---
     const MAIL_FROM = env.MAIL_FROM;
     const MAIL_TO   = env.MAIL_TO;
     if (!MAIL_FROM || !MAIL_TO) {
-      return new Response(JSON.stringify({
-        ok:false, stage:'env', error:'MAIL_FROM or MAIL_TO not set',
-        have: { MAIL_FROM: !!MAIL_FROM, MAIL_TO: !!MAIL_TO }
-      }), { status: 500, headers: headersJSON() });
+      return new Response(JSON.stringify({ ok:false, stage:'env', error:'MAIL_FROM or MAIL_TO not set', have:{ MAIL_FROM:!!MAIL_FROM, MAIL_TO:!!MAIL_TO } }), { status:500, headers: jsonHeaders });
     }
 
-    // --- BYPASS SEND (useful while fixing DNS/SPF) ---
+    // optional: bypass send while debugging (set BYPASS_SEND=1)
     if (String(env.BYPASS_SEND || '') === '1') {
-      return new Response(JSON.stringify({ ok:true, bypass:true, received:{ name, email, project, budget, message, pageUrl, timestamp } }), {
-        status: 200, headers: headersJSON()
-      });
+      return new Response(JSON.stringify({ ok:true, bypass:true, received:{ name, email, project, budget, message, pageUrl, timestamp } }), { status:200, headers: jsonHeaders });
     }
 
-    // --- MailChannels payload ---
     const payload = {
       personalizations: [{ to: [{ email: MAIL_TO }] }],
       from: { email: MAIL_FROM, name: 'Etern8 Tech' },
@@ -130,20 +92,14 @@ Time: ${timestamp}`
       });
       mailText = await mailRes.text();
     } catch (e) {
-      // network/resolve error
-      return new Response(JSON.stringify({ ok:false, stage:'mail-fetch', error:String(e) }), {
-        status: 502, headers: headersJSON()
-      });
+      return new Response(JSON.stringify({ ok:false, stage:'mail-fetch', error:String(e) }), { status:502, headers: jsonHeaders });
     }
 
     if (!mailRes.ok) {
-      // explicit error from MailChannels
-      return new Response(JSON.stringify({ ok:false, stage:'mail', status: mailRes.status, error: mailText }), {
-        status: 502, headers: headersJSON()
-      });
+      return new Response(JSON.stringify({ ok:false, stage:'mail', status:mailRes.status, error: mailText }), { status:502, headers: jsonHeaders });
     }
 
-    // Optional: Telegram alert (non-blocking)
+    // optional non-blocking Telegram
     try {
       if (env.TELEGRAM_TOKEN && env.TELEGRAM_CHAT_ID) {
         const text =
@@ -161,15 +117,9 @@ ${message ? `Message: ${message}\n` : ''}${pageUrl ? `Page: ${pageUrl}\n` : ''}T
       }
     } catch (_) {}
 
-    return new Response(JSON.stringify({ ok:true, mail:{ status: mailRes.status } }), {
-      status: 200, headers: headersJSON()
-    });
+    return new Response(JSON.stringify({ ok:true, mail:{ status: mailRes.status } }), { status:200, headers: jsonHeaders });
   } catch (e) {
-    // final catch-all to avoid Cloudflare 502
-   return new Response(JSON.stringify({ ok:false, stage:'runtime', error: String(e) }), {
-      status: 500,
-      headers: { 'content-type':'application/json', 'access-control-allow-origin': origin || '*' }
-    });
+    return new Response(JSON.stringify({ ok:false, stage:'runtime', error:String(e) }), { status:500, headers: jsonHeaders });
   }
 }
 
