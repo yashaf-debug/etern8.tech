@@ -17,6 +17,18 @@ export async function onRequestPost({ request, env }) {
   const allowed = (env.ORIGIN_ALLOWED || '').split(',').map(s => s.trim()).filter(Boolean);
   const jsonHeaders = { 'content-type': 'application/json', 'access-control-allow-origin': origin || '*' };
 
+  // --- TEMP DEBUG: echo raw body early ---
+  if (String(env.ECHO_MODE || '') === '1') {
+    let raw = '';
+    try { raw = await request.text(); } catch (_) {}
+    return new Response(JSON.stringify({
+      ok: true,
+      echo: true,
+      contentType: request.headers.get('content-type'),
+      raw
+    }), { status: 200, headers: jsonHeaders });
+  }
+
   try {
     if (origin && allowed.length && !allowed.includes(origin)) {
       return new Response(JSON.stringify({ ok:false, stage:'cors', origin, allowed }), { status:403, headers: jsonHeaders });
