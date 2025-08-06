@@ -1,4 +1,5 @@
 import { sendMailViaMC } from '../_shared/mail.js';
+import { sendToTelegram } from '../_shared/tg.js';
 
 export async function onRequestOptions() {
   return new Response(null, {
@@ -13,14 +14,12 @@ export async function onRequestOptions() {
 
 export async function onRequestPost({ request, env }) {
   try {
-    if (request.headers.get('content-type')?.includes('application/json') !== true) {
+    if (!request.headers.get('content-type')?.includes('application/json')) {
       return json({ ok:false, stage:'validate', error:'Unsupported content-type' }, 415);
     }
-
     const data = await request.json().catch(() => ({}));
-    const fields = pick(data, ['name','email','project','budget','message','pageUrl','timestamp']);
-
-    const missing = ['name','email','project'].filter(k => !String(fields[k]||'').trim());
+    const req = pick(data, ['name','email','project','budget','message','pageUrl','timestamp']);
+    const missing = ['name','email','project'].filter(k => !String(req[k]||'').trim());
     if (missing.length) {
       return json({ ok:false, stage:'validate', error:'Missing required fields', fields:{ missing } }, 400);
     }
@@ -30,31 +29,35 @@ export async function onRequestPost({ request, env }) {
 
     const text = [
       `New brief from website`,
-      `Name: ${fields.name}`,
-      `Email: ${fields.email}`,
-      `Project: ${fields.project}`,
-      fields.budget  ? `Budget: ${fields.budget}`   : null,
-      fields.message ? `Message: ${fields.message}` : null,
-      fields.pageUrl ? `Page: ${fields.pageUrl}`    : null,
-      fields.timestamp ? `Time: ${fields.timestamp}`: null,
+      `Name: ${req.name}`,
+      `Email: ${req.email}`,
+      `Project: ${req.project}`,
+      req.budget  ? `Budget: ${req.budget}`   : null,
+      req.message ? `Message: ${req.message}` : null,
+      req.pageUrl ? `Page: ${req.pageUrl}`    : null,
+      req.timestamp ? `Time: ${req.timestamp}`: null,
     ].filter(Boolean).join('\n');
 
-    const { status, body } = await sendMailViaMC({
+    const mail = await sendMailViaMC({
       fromEmail: MAIL_FROM,
-      fromName : 'Etern8 Tech',
       toEmail  : MAIL_TO,
-      toName   : 'Etern8 Inbound',
-      subject  : `New Brief — ${fields.project} — ${fields.name}`,
-      text,
-      replyToEmail: fields.email,
-      replyToName : fields.name
+      subject  : `New Brief — ${req.project} — ${req.name}`,
+      text
+    });
+
+    // Telegram fallback всегда — чтобы не потерять лиды
+    const tg = await sendToTelegram({
+      botToken: env.TG_BOT_TOKEN,
+      chatId  : env.TG_CHAT_ID,
+      text    : `Brief: ${req.name} <${req.email}>\n${req.project}\n${req.budget||''}\n${(req.message||'').slice(0,300)}`
     });
 
     return json({
-      ok: status === 202,
+      ok: mail.status === 202,
       stage: 'mail',
-      mail: { status, body: body?.slice(0, 500) },
-      received: fields
+      mail: { status: mail.status, server: mail.server, body: mail.body.slice(0, 400) },
+      tg,
+      received: req
     });
 
   } catch (e) {
@@ -62,7 +65,6 @@ export async function onRequestPost({ request, env }) {
   }
 }
 
-// helpers
 function json(obj, status=200) {
   return new Response(JSON.stringify(obj), {
     status,
