@@ -1,36 +1,47 @@
 export async function onRequestOptions() {
+  // CORS / preflight (на всякий случай)
   return new Response(null, {
     status: 204,
-    headers: {
-      'access-control-allow-origin': '*',
-      'access-control-allow-methods': 'POST, OPTIONS',
-      'access-control-allow-headers': 'content-type'
-    }
+    headers: corsHeaders()
   });
 }
 
-export async function onRequestPost({ request, env }) {
+export async function onRequestPost(context) {
+  const { request, env } = context;
+
   try {
-    const data = await request.json().catch(() => ({}));
-    const errors = {};
-    if (!data.name)    errors.name = 'required';
-    if (!data.email)   errors.email = 'required';
-    if (!data.project) errors.project = 'required';
-    if (Object.keys(errors).length) {
-      return json({ ok:false, stage:'validate', error:'Missing required fields', fields:errors }, 400);
+    // 1) Аккуратно читаем JSON
+    let data = {};
+    try {
+      data = await request.json();
+    } catch {
+      return json({ ok: false, stage: 'parse', error: 'Invalid JSON body' }, 400);
     }
 
+    // 2) Валидация обязательных полей
+    const miss = {};
+    if (!data.name)    miss.name = 'required';
+    if (!data.email)   miss.email = 'required';
+    if (!data.project) miss.project = 'required';
+    if (Object.keys(miss).length) {
+      return json({ ok:false, stage:'validate', error:'Missing required fields', fields:miss }, 400);
+    }
+
+    // 3) Переменные окружения (и в Preview, и в Production!)
     const MAIL_FROM = env.MAIL_FROM;
     const MAIL_TO   = env.MAIL_TO;
     const RESEND    = env.RESEND_API_KEY;
+    const TG_TOKEN  = env.TG_BOT_TOKEN;
+    const TG_CHAT   = env.TG_CHAT_ID;
 
     if (!MAIL_FROM || !MAIL_TO) {
-      return json({ ok:false, stage:'config', error:'MAIL_FROM/MAIL_TO missing' }, 500);
+      return json({ ok:false, stage:'config', error:'MAIL_FROM/MAIL_TO missing' }, 200);
     }
     if (!RESEND) {
-      return json({ ok:false, stage:'config', error:'RESEND_API_KEY missing' }, 500);
+      return json({ ok:false, stage:'config', error:'RESEND_API_KEY missing' }, 200);
     }
 
+    // 4) Письмо
     const subject = `New brief: ${data.project}`;
     const textBody = [
       `Name: ${data.name}`,
@@ -44,71 +55,91 @@ export async function onRequestPost({ request, env }) {
 
     const htmlBody = `
       <h2>New brief</h2>
-      <p><b>Name:</b> ${escapeHtml(data.name)}</p>
-      <p><b>Email:</b> ${escapeHtml(data.email)}</p>
-      <p><b>Project:</b> ${escapeHtml(data.project)}</p>
-      <p><b>Budget:</b> ${escapeHtml(data.budget || '-')}</p>
-      <p><b>Message:</b><br>${escapeHtml(data.message || '-').replace(/\n/g,'<br>')}</p>
-      <p><b>Page:</b> ${escapeHtml(data.pageUrl || '-')}</p>
-      <p><b>Time:</b> ${escapeHtml(data.timestamp || new Date().toISOString())}</p>
+      <p><b>Name:</b> ${esc(data.name)}</p>
+      <p><b>Email:</b> ${esc(data.email)}</p>
+      <p><b>Project:</b> ${esc(data.project)}</p>
+      <p><b>Budget:</b> ${esc(data.budget || '-')}</p>
+      <p><b>Message:</b><br>${esc(data.message || '-').replace(/\n/g,'<br>')}</p>
+      <p><b>Page:</b> ${esc(data.pageUrl || '-')}</p>
+      <p><b>Time:</b> ${esc(data.timestamp || new Date().toISOString())}</p>
     `;
 
-    // ---- Resend ----
-    const r = await fetch('https://api.resend.com/emails', {
-      method: 'POST',
-      headers: {
-        'content-type': 'application/json',
-        'authorization': `Bearer ${RESEND}`
-      },
-      body: JSON.stringify({
-        from: MAIL_FROM,
-        to: [MAIL_TO],
-        reply_to: data.email,
-        subject,
-        text: textBody,
-        html: htmlBody
-      })
-    });
+    // 5) Отправка через Resend (никаких throw наружу)
+    let mail = { ok: false };
+    try {
+      const r = await fetch('https://api.resend.com/emails', {
+        method: 'POST',
+        headers: {
+          'content-type': 'application/json',
+          'authorization': `Bearer ${RESEND}`
+        },
+        body: JSON.stringify({
+          from: MAIL_FROM,
+          to: [MAIL_TO],
+          reply_to: data.email,
+          subject,
+          text: textBody,
+          html: htmlBody
+        })
+      });
 
-    const rText = await r.text();
-    const ok = r.ok; // 200/201
+      const body = await r.text();   // Resend часто возвращает JSON; но читаем как текст, чтобы не падать
+      mail = { ok: r.ok, status: r.status, body: body.slice(0, 500) };
 
-    // Telegram fallback (не критично)
+    } catch (e) {
+      mail = { ok:false, error: String(e) };
+    }
+
+    // 6) Телеграм (опционально)
     let tg = { ok:false, reason:'tg-not-configured' };
-    if (env.TG_BOT_TOKEN && env.TG_CHAT_ID) {
+    if (TG_TOKEN && TG_CHAT) {
       try {
-        const tgRes = await fetch(`https://api.telegram.org/bot${env.TG_BOT_TOKEN}/sendMessage`, {
+        const tgRes = await fetch(`https://api.telegram.org/bot${TG_TOKEN}/sendMessage`, {
           method:'POST',
           headers:{ 'content-type':'application/json' },
           body: JSON.stringify({
-            chat_id: env.TG_CHAT_ID,
+            chat_id: TG_CHAT,
             text: `Etern8 Brief\n\n${textBody}`,
-            parse_mode: 'HTML',
             disable_web_page_preview: true
           })
         });
         tg = { ok: tgRes.ok, status: tgRes.status };
-      } catch(e) { tg = { ok:false, error: String(e) }; }
+      } catch (e) {
+        tg = { ok:false, error:String(e) };
+      }
     }
 
+    // 7) Никогда не 5xx с нашей стороны — только JSON
     return json({
-      ok,
-      provider: 'resend',
-      httpStatus: r.status,
-      bodyPreview: rText.slice(0, 400),
-      received: { name: data.name, email: data.email, project: data.project },
-      tg
-    }, ok ? 200 : 502);
+      ok: !!mail.ok,
+      stage: 'mail',
+      mail,
+      tg,
+      received: { name: data.name, email: data.email, project: data.project }
+    }, 200);
 
   } catch (e) {
-    return json({ ok:false, stage:'exception', error:String(e) }, 500);
+    // На всякий случай: капсулируем всё
+    return json({ ok:false, stage:'exception', error:String(e) }, 200);
   }
 }
 
-function json(obj, status=200){
+// helpers
+function json(obj, status = 200) {
   return new Response(JSON.stringify(obj), {
-    status, headers:{ 'content-type':'application/json; charset=utf-8', 'access-control-allow-origin':'*' }
+    status,
+    headers: { 
+      'content-type': 'application/json; charset=utf-8',
+      ...corsHeaders()
+    }
   });
 }
-function escapeHtml(s=''){return s.replace(/[&<>"]/g,c=>({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;' }[c]));}
+function corsHeaders() {
+  return {
+    'access-control-allow-origin': '*',
+    'access-control-allow-methods': 'POST,OPTIONS',
+    'access-control-allow-headers': 'content-type'
+  };
+}
+function esc(s=''){ return String(s).replace(/[&<>"]/g,c=>({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;' }[c])); }
 
