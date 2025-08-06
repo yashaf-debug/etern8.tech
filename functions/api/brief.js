@@ -1,4 +1,4 @@
-// OPTIONS (CORS preflight)
+// CORS preflight
 export async function onRequestOptions({ request }) {
   const origin = request.headers.get('origin') || '*';
   return new Response(null, {
@@ -11,68 +11,75 @@ export async function onRequestOptions({ request }) {
   });
 }
 
-// POST /api/brief
-export async function onRequestPost({ request, env }) {
+export async function onRequestPost(ctx) {
+  try {
+    return await handle(ctx);
+  } catch (e) {
+    console.error('FATAL /api/brief:', e);
+    return json(ctx, 200, { ok: false, stage: 'fatal', error: String(e) });
+  }
+}
+
+async function handle({ request, env }) {
   const origin   = request.headers.get('origin') || '';
   const allowed  = (env.ORIGIN_ALLOWED || '').split(',').map(s => s.trim()).filter(Boolean);
-  const headers  = { 'content-type':'application/json', 'access-control-allow-origin': origin || '*' };
+  if (origin && allowed.length && !allowed.includes(origin)) {
+    return json({ request, env }, 200, { ok: false, stage: 'cors', origin, allowed });
+  }
 
+  // parse body (JSON или form-data)
+  let body = {};
   try {
-    if (origin && allowed.length && !allowed.includes(origin)) {
-      return new Response(JSON.stringify({ ok:false, stage:'cors', origin, allowed }), { status:403, headers });
-    }
-
-    // parse body
     const ct = (request.headers.get('content-type') || '').toLowerCase();
-    let body = {};
     if (ct.includes('application/json')) body = await request.json();
     else body = Object.fromEntries((await request.formData()).entries());
+  } catch (e) {
+    console.error('parse error:', e);
+    return json({ request, env }, 200, { ok: false, stage: 'parse', error: String(e) });
+  }
 
-    // honeypot
-    if (body.company) {
-      return new Response(JSON.stringify({ ok:true, spam:true }), { status:200, headers });
-    }
+  // honeypot
+  if (body.company) {
+    return json({ request, env }, 200, { ok: true, spam: true });
+  }
 
-    const name      = (body.name    || '').trim();
-    const email     = (body.email   || '').trim();
-    const project   = (body.project || '').trim();
-    const budget    = (body.budget  || '').trim();
-    const message   = (body.message || '').trim();
-    const pageUrl   = (body.pageUrl || '').trim();
-    const timestamp = body.timestamp || new Date().toISOString();
+  const name     = (body.name    || '').trim();
+  const email    = (body.email   || '').trim();
+  const project  = (body.project || '').trim();
+  const budget   = (body.budget  || '').trim();
+  const message  = (body.message || '').trim();
+  const pageUrl  = (body.pageUrl || '').trim();
+  const timestamp = body.timestamp || new Date().toISOString();
 
-    if (!name || !email || !project) {
-      return new Response(JSON.stringify({
-        ok:false, stage:'validate', error:'Missing required fields',
-        fields:{ name:!!name, email:!!email, project:!!project }
-      }), { status:400, headers });
-    }
+  if (!name || !email || !project) {
+    return json({ request, env }, 200, {
+      ok: false, stage: 'validate',
+      error: 'Missing required fields',
+      fields: { name: !!name, email: !!email, project: !!project }
+    });
+  }
 
-    const MAIL_FROM = env.MAIL_FROM;
-    const MAIL_TO   = env.MAIL_TO;
-    if (!MAIL_FROM || !MAIL_TO) {
-      return new Response(JSON.stringify({ ok:false, stage:'env', error:'MAIL_FROM or MAIL_TO not set' }), {
-        status:500, headers
-      });
-    }
+  const MAIL_FROM = env.MAIL_FROM;
+  const MAIL_TO   = env.MAIL_TO;
+  if (!MAIL_FROM || !MAIL_TO) {
+    return json({ request, env }, 200, { ok: false, stage: 'env', error: 'MAIL_FROM or MAIL_TO not set' });
+  }
 
-    // На время отладки можно включить BYPASS_SEND=1 в переменных среды
-    if (String(env.BYPASS_SEND || '') === '1') {
-      return new Response(JSON.stringify({
-        ok:true, bypass:true,
-        received:{ name, email, project, budget, message, pageUrl, timestamp }
-      }), { status:200, headers });
-    }
+  // Быстрый обход отправки на время отладки
+  if (String(env.BYPASS_SEND || '') === '1') {
+    return json({ request, env }, 200, { ok: true, bypass: true, received: { name, email, project, budget, message, pageUrl, timestamp } });
+  }
 
-    // MailChannels
-    const mailPayload = {
+  // Отправка письма (MailChannels) с таймаутом, любые ошибки -> JSON 200
+  try {
+    const controller = new AbortController();
+    const timer = setTimeout(() => controller.abort(), 8000);
+    const payload = {
       personalizations: [{ to: [{ email: MAIL_TO }] }],
       from: { email: MAIL_FROM, name: 'Etern8 Tech' },
       headers: { 'Reply-To': email },
       subject: `New Brief — ${name} / ${project}`,
-      content: [{
-        type: 'text/plain',
-        value:
+      content: [{ type: 'text/plain', value:
 `Name: ${name}
 Email: ${email}
 Project: ${project}
@@ -80,51 +87,58 @@ Budget: ${budget}
 Message: ${message}
 
 Page: ${pageUrl}
-Time: ${timestamp}`
-      }]
+Time: ${timestamp}` }]
     };
-
-    let mailRes, mailText = '';
-    try {
-      mailRes  = await fetch('https://api.mailchannels.net/tx/v1/send', {
-        method: 'POST',
-        headers: { 'content-type': 'application/json' },
-        body: JSON.stringify(mailPayload)
-      });
-      mailText = await mailRes.text();
-    } catch (e) {
-      return new Response(JSON.stringify({ ok:false, stage:'mail-fetch', error:String(e) }), { status:502, headers });
+    const res = await fetch('https://api.mailchannels.net/tx/v1/send', {
+      method: 'POST',
+      headers: { 'content-type': 'application/json' },
+      body: JSON.stringify(payload),
+      signal: controller.signal
+    });
+    clearTimeout(timer);
+    const text = await res.text().catch(() => '');
+    if (!res.ok) {
+      console.error('mail error:', res.status, text.slice(0, 200));
+      return json({ request, env }, 200, { ok: false, stage: 'mail', httpStatus: res.status, error: text.slice(0, 200) });
     }
+  } catch (e) {
+    const isAbort = String(e).includes('AbortError');
+    console.error(isAbort ? 'mail-timeout' : 'mail-fetch', e);
+    return json({ request, env }, 200, { ok: false, stage: isAbort ? 'mail-timeout' : 'mail-fetch', error: String(e) });
+  }
 
-    if (!mailRes.ok) {
-      return new Response(JSON.stringify({ ok:false, stage:'mail', status:mailRes.status, error:mailText }), { status:502, headers });
-    }
-
-    // Telegram — необязательно, не блокирует ответ
-    try {
-      if (env.TELEGRAM_TOKEN && env.TELEGRAM_CHAT_ID) {
-        const text =
+  // Telegram — не блокируем ответ
+  try {
+    if (env.TELEGRAM_TOKEN && env.TELEGRAM_CHAT_ID) {
+      const text =
 `New lead:
 Name: ${name}
 Email: ${email}
 Project: ${project}
 Budget: ${budget}
 ${message ? `Message: ${message}\n` : ''}${pageUrl ? `Page: ${pageUrl}\n` : ''}Time: ${timestamp}`;
-        const payload = { chat_id: env.TELEGRAM_CHAT_ID, text };
-        if (env.TELEGRAM_THREAD_ID) payload.message_thread_id = Number(env.TELEGRAM_THREAD_ID);
-        await fetch(
-          `https://api.telegram.org/bot${env.TELEGRAM_TOKEN}/sendMessage`,
-          {
-            method: 'POST',
-            headers: { 'content-type': 'application/json' },
-            body: JSON.stringify(payload)
-          }
-        );
-      }
-    } catch (_) {}
-
-    return new Response(JSON.stringify({ ok:true, mail:{ status: mailRes.status } }), { status:200, headers });
+      const payload = { chat_id: env.TELEGRAM_CHAT_ID, text };
+      if (env.TELEGRAM_THREAD_ID) payload.message_thread_id = Number(env.TELEGRAM_THREAD_ID);
+      await fetch(`https://api.telegram.org/bot${env.TELEGRAM_TOKEN}/sendMessage`, {
+        method: 'POST',
+        headers: { 'content-type': 'application/json' },
+        body: JSON.stringify(payload)
+      }).catch(() => {});
+    }
   } catch (e) {
-    return new Response(JSON.stringify({ ok:false, stage:'runtime', error:String(e) }), { status:500, headers });
+    console.error('telegram error:', e);
   }
+
+  return json({ request, env }, 200, { ok: true, mail: { status: 202 } });
+}
+
+function json({ request, env }, status, data) {
+  const origin = (request && request.headers.get('origin')) || '*';
+  return new Response(JSON.stringify(data), {
+    status,
+    headers: {
+      'content-type': 'application/json',
+      'access-control-allow-origin': origin
+    }
+  });
 }
