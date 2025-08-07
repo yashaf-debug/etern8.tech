@@ -90,7 +90,38 @@ export async function onRequestPost(context) {
       mail = { ok:false, error: String(e) };
     }
 
-    // 6) Телеграм (опционально)
+    // 6) Автоответ пользователю (если email валиден)
+    const emailRe = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    let autoReply = { ok:false, reason:'skip' };
+    if (emailRe.test(data.email)) {
+      const isRU = (data.pageUrl || '').includes('/ru/');
+      const replySubject = isRU
+        ? 'Спасибо — Заявка получена'
+        : 'Thanks — Etern8 Tech brief received';
+      const replyText = isRU
+        ? 'Мы получили ваш бриф и ответим в течение 24 часов.'
+        : 'We received your brief and will reply within 24 hours.';
+      try {
+        const r2 = await fetch('https://api.resend.com/emails', {
+          method: 'POST',
+          headers: {
+            'content-type': 'application/json',
+            'authorization': `Bearer ${RESEND}`
+          },
+          body: JSON.stringify({
+            from: MAIL_FROM,
+            to: [data.email],
+            subject: replySubject,
+            text: replyText
+          })
+        });
+        autoReply = { ok: r2.ok, status: r2.status };
+      } catch (e) {
+        autoReply = { ok:false, error:String(e) };
+      }
+    }
+
+    // 7) Телеграм (опционально)
     let tg = { ok:false, reason:'tg-not-configured' };
     if (TG_TOKEN && TG_CHAT) {
       try {
@@ -109,12 +140,13 @@ export async function onRequestPost(context) {
       }
     }
 
-    // 7) Никогда не 5xx с нашей стороны — только JSON
+    // 8) Никогда не 5xx с нашей стороны — только JSON
     return json({
       ok: !!mail.ok,
       stage: 'mail',
       mail,
       tg,
+      autoReply,
       received: { name: data.name, email: data.email, project: data.project }
     }, 200);
 
