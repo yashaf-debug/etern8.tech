@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Контакты — Etern8 Tech</title>
+  <meta name="description" content="Напишите нам на почту или в Telegram. Ответим в течение 24 часов." />
+  <meta property="og:title" content="Контакты — Etern8 Tech" />
+  <meta property="og:description" content="Почта hello@etern8.tech или Telegram @etern8_bot." />
+  <meta property="og:type" content="website" />
+  <meta property="og:image" content="/assets/og.png" />
+  <meta property="og:url" content="https://etern8.tech/ru/contact.html" />
+
+  <!-- Hreflang -->
+  <link rel="canonical" href="https://etern8.tech/ru/contact.html" />
+  <link rel="alternate" hreflang="en" href="https://etern8.tech/contact.html" />
+  <link rel="alternate" hreflang="ru" href="https://etern8.tech/ru/contact.html" />
+  <link rel="alternate" hreflang="x-default" href="https://etern8.tech/contact.html" />
+
+  <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml" />
+  <link rel="stylesheet" href="/css/styles.css" />
+</head>
+<body>
+  <header class="site-header">
+    <div class="container header-inner">
+      <a href="/ru/index.html" class="logo-link" aria-label="Etern8 Tech">
+        <img src="/assets/etern8_logo.png" alt="Etern8 Tech logo" class="logo-img" width="140" height="40" decoding="async">
+      </a>
+      <button id="menu-toggle" class="burger" aria-label="Toggle menu" aria-expanded="false">☰</button>
+      <nav class="site-nav" id="site-nav">
+        <ul class="nav-links">
+          <li><a href="/ru/index.html">Главная</a></li>
+          <li><a href="/ru/services.html">Услуги</a></li>
+          <li><a href="/ru/why.html">Почему мы</a></li>
+          <li><a href="/ru/cases.html">Портфолио</a></li>
+          <li><a href="/ru/about.html">О нас</a></li>
+          <li><a href="/ru/contact.html">Контакты</a></li>
+        </ul>
+        <div class="language-switcher">
+          <a class="lang" href="/contact.html">EN</a>
+          <a class="lang" href="/ru/contact.html">RU</a>
+        </div>
+      </nav>
+    </div>
+  </header>
+
+  <section class="hero hero-sub">
+    <div class="container hero-inner">
+      <h1>Контакты</h1>
+      <p>Ответим в течение 24 часов.</p>
+    </div>
+  </section>
+
+  <section id="contact" class="contact">
+    <div class="container">
+      <h2>Связаться с нами</h2>
+      <p>Почта: <a href="mailto:hello@etern8.tech">hello@etern8.tech</a><br>Telegram: <a href="https://t.me/etern8_bot">@etern8_bot</a></p>
+      <form id="brief-form" method="post" novalidate>
+        <input type="text" name="company" autocomplete="off" tabindex="-1" aria-hidden="true" style="display:none">
+        <input type="text"  name="name"    placeholder="Имя" required>
+        <input type="email" name="email"   placeholder="Email" required>
+        <input type="text"  name="project" placeholder="Проект" required>
+        <input type="text"  name="budget"  placeholder="Бюджет (USD)">
+        <textarea name="message" placeholder="Сообщение"></textarea>
+        <label class="policy"><input type="checkbox" required> Я согласен с Политикой конфиденциальности.</label>
+        <button type="submit" class="btn-primary">Отправить бриф</button>
+      </form>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <div class="container">
+      <p>© 2025 Etern8 Tech. <a href="/ru/privacy.html">Конфиденциальность</a> · <a href="/ru/terms.html">Условия</a></p>
+    </div>
+  </footer>
+
+  <script src="/js/script.js"></script>
+</body>
+</html>
