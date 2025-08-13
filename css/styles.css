@@ -1,3 +1,6 @@
+.visually-hidden{position:absolute !important;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+.hp-field{position:absolute !important;left:-10000px;top:0;width:1px;height:1px;overflow:hidden}
+.hp-field input{pointer-events:none}
 :root{
   --bg:#fff; --bg-alt:#f8f9fa;
   --text:#212529; --muted:#495057;
@@ -158,3 +161,4 @@ a:hover{color:var(--primary-dark)}
 .ricon{width:44px;height:44px;border-radius:12px;display:grid;place-items:center;margin-bottom:.35rem;background:rgba(30,144,255,.12);color:#1E90FF}
 .derisk{padding:1rem 0 2.5rem}
 .derisk ul{margin:.5rem 0 0 1.2rem}
+.case-cards,.tiles-row,.testimonials{content-visibility:auto;contain-intrinsic-size:1000px}

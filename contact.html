@@ -7,8 +7,6 @@
   <link rel="preconnect" href="https://www.googletagmanager.com" crossorigin>
   <link rel="preconnect" href="https://www.google-analytics.com" crossorigin>
 
-  <!-- Preload Hero Image -->
-  <link rel="preload" as="image" href="/assets/hero-bg.jpg" fetchpriority="high">
   <!-- Primary SEO -->
   <title>Contact — Etern8 Tech</title>
   <meta name="description" content="Get in touch via email or Telegram. We'll reply within 24 hours." />
@@ -83,6 +81,10 @@
       debug_mode: false
     });
   </script>
+  <link rel="manifest" href="/site.webmanifest">
+  <meta name="theme-color" content="#0b0f1a">
+  <link rel="apple-touch-icon" sizes="180x180" href="/assets/icons/apple-touch-icon.png">
+  <script src="/js/script.js" defer></script>
 </head>
 <body>
   <header class="site-header">
@@ -119,16 +121,36 @@
     <div class="container">
       <h2>Let's Talk</h2>
       <p>Email: <a href="mailto:hello@etern8.tech">hello@etern8.tech</a><br>Telegram: <a href="https://t.me/etern8_bot">@etern8_bot</a></p>
-      <form id="brief-form" method="post" novalidate>
-        <input type="text" name="company" autocomplete="off" tabindex="-1" aria-hidden="true" style="display:none">
-        <input type="text"  name="name"    placeholder="Name" required>
-        <input type="email" name="email"   placeholder="Email" required>
-        <input type="text"  name="project" placeholder="Project" required>
-        <input type="text"  name="budget"  placeholder="Budget Range (USD)">
-        <textarea name="message" placeholder="Message"></textarea>
-        <label class="policy"><input type="checkbox" required> I agree with the Privacy Policy.</label>
-        <button type="submit" class="btn-primary">Send Brief</button>
-      </form>
+      <form id="brief-form" class="brief-form" novalidate>
+  <!-- honeypot (hidden) -->
+  <div class="hp-field" aria-hidden="true">
+    <label for="company" class="visually-hidden">Company</label>
+    <input type="text" id="company" name="company" tabindex="-1" autocomplete="off">
+  </div>
+
+  <div class="form-row">
+    <input type="text" name="name" placeholder="Name" required>
+  </div>
+  <div class="form-row">
+    <input type="email" name="email" placeholder="Email" required>
+  </div>
+  <div class="form-row">
+    <input type="text" name="project" placeholder="Project">
+  </div>
+  <div class="form-row">
+    <input type="text" name="budget" placeholder="Budget Range (USD)">
+  </div>
+  <div class="form-row">
+    <textarea name="message" placeholder="Message"></textarea>
+  </div>
+
+  <label class="policy">
+    <input type="checkbox" name="agree" required>
+    I agree with the <a href="/privacy.html" target="_blank" rel="noopener">Privacy Policy</a>.
+  </label>
+
+  <button type="submit" class="btn-primary">Send Brief</button>
+</form>
     </div>
   </section>
 
@@ -138,6 +160,5 @@
     </div>
   </footer>
 
-  <script src="/js/script.js"></script>
 </body>
 </html>
