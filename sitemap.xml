@@ -7,6 +7,8 @@
   <url><loc>https://etern8.tech/why.html</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
   <url><loc>https://etern8.tech/about.html</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
   <url><loc>https://etern8.tech/contact.html</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://etern8.tech/privacy.html</loc><changefreq>yearly</changefreq><priority>0.3</priority></url>
+  <url><loc>https://etern8.tech/terms.html</loc><changefreq>yearly</changefreq><priority>0.3</priority></url>
 
   <!-- RU -->
   <url><loc>https://etern8.tech/ru/</loc><changefreq>weekly</changefreq><priority>1.0</priority></url>
@@ -15,4 +17,6 @@
   <url><loc>https://etern8.tech/ru/why.html</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
   <url><loc>https://etern8.tech/ru/about.html</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
   <url><loc>https://etern8.tech/ru/contact.html</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://etern8.tech/ru/privacy.html</loc><changefreq>yearly</changefreq><priority>0.3</priority></url>
+  <url><loc>https://etern8.tech/ru/terms.html</loc><changefreq>yearly</changefreq><priority>0.3</priority></url>
 </urlset>
