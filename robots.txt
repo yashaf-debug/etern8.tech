@@ -1,3 +1,4 @@
 User-agent: *
 Allow: /
+
 Sitemap: https://etern8.tech/sitemap.xml
