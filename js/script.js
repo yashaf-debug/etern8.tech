@@ -21,11 +21,6 @@ document.addEventListener('DOMContentLoaded', () => {
     );
   }
 
-  // --- Neutralize any "mailto:" anchors (safety) ---
-  document.querySelectorAll('a[href^="mailto:"]').forEach(a => {
-    a.replaceWith(a.textContent || '');
-  });
-
   // --- Brief form handler (EN + RU) ---
   const form = document.getElementById('brief-form');
   if (form) {
