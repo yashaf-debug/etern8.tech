@@ -3,6 +3,12 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <!-- Preconnects -->
+  <link rel="preconnect" href="https://www.googletagmanager.com" crossorigin>
+  <link rel="preconnect" href="https://www.google-analytics.com" crossorigin>
+
+  <!-- Preload Hero Image -->
+  <link rel="preload" as="image" href="/assets/hero-bg.jpg" fetchpriority="high">
   <!-- Primary SEO -->
   <title>Privacy Policy — Etern8 Tech</title>
   <meta name="description" content="Privacy policy for Etern8 Tech." />
@@ -58,12 +64,34 @@
   ]
   }
   </script>
+
+  <!-- Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-KQYJ1N0XLL"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){ dataLayer.push(arguments); }
+
+    // Consent Mode (минимальный вариант; если нет баннера — оставь granted)
+    gtag('consent', 'default', {
+      ad_storage: 'denied',
+      ad_user_data: 'denied',
+      ad_personalization: 'denied',
+      analytics_storage: 'granted'
+    });
+
+    gtag('js', new Date());
+    gtag('config', 'G-KQYJ1N0XLL', {
+      send_page_view: true,
+      anonymize_ip: true,
+      debug_mode: false
+    });
+  </script>
 </head>
 <body>
   <header class="site-header">
     <div class="container header-inner">
       <a href="/index.html" class="logo-link" aria-label="Etern8 Tech">
-        <img src="/assets/etern8_logo.png" alt="Etern8 Tech logo" class="logo-img" width="140" height="40" decoding="async">
+        <img src="/assets/etern8_logo.png" alt="Etern8 Tech logo" class="logo-img" width="140" height="40" decoding="async" loading="lazy">
       </a>
       <button id="menu-toggle" class="burger" aria-label="Toggle menu" aria-expanded="false">☰</button>
       <nav class="site-nav" id="site-nav">

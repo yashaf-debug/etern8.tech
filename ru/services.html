@@ -3,6 +3,12 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <!-- Preconnects -->
+  <link rel="preconnect" href="https://www.googletagmanager.com" crossorigin>
+  <link rel="preconnect" href="https://www.google-analytics.com" crossorigin>
+
+  <!-- Preload Hero Image -->
+  <link rel="preload" as="image" href="/assets/hero-bg.jpg" fetchpriority="high">
   <!-- Primary SEO -->
   <title>Услуги — Etern8 Tech</title>
   <meta name="description" content="Разработка приложений, сайты, интеграция ИИ и дизайн — запускайтесь быстро.">
@@ -91,12 +97,34 @@
   ]
   }
   </script>
+
+  <!-- Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-KQYJ1N0XLL"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){ dataLayer.push(arguments); }
+
+    // Consent Mode (минимальный вариант; если нет баннера — оставь granted)
+    gtag('consent', 'default', {
+      ad_storage: 'denied',
+      ad_user_data: 'denied',
+      ad_personalization: 'denied',
+      analytics_storage: 'granted'
+    });
+
+    gtag('js', new Date());
+    gtag('config', 'G-KQYJ1N0XLL', {
+      send_page_view: true,
+      anonymize_ip: true,
+      debug_mode: false
+    });
+  </script>
 </head>
 <body>
   <header class="site-header">
     <div class="container header-inner">
       <a href="/ru/index.html" class="logo-link" aria-label="Etern8 Tech">
-        <img src="/assets/etern8_logo.png" alt="Etern8 Tech logo" class="logo-img" width="140" height="40" decoding="async">
+        <img src="/assets/etern8_logo.png" alt="Etern8 Tech logo" class="logo-img" width="140" height="40" decoding="async" loading="lazy">
       </a>
       <button id="menu-toggle" class="burger" aria-label="Toggle menu" aria-expanded="false">☰</button>
       <nav class="site-nav" id="site-nav">
@@ -135,7 +163,7 @@
           <p><strong>Что делаем:</strong> чатботы для Telegram/WhatsApp/Web, интеграция с CRM, передача оператору.</p>
           <p><strong>Стек:</strong> Node.js, Python, Dialogflow, GPT-4.</p>
           <p><strong>Процесс:</strong> бриф → спринт 0 → dev-спринты → QA → запуск.</p>
-          <a href="/ru/contact.html" class="btn-primary">Оставить заявку</a>
+          <a href="/ru/contact.html" class="btn-primary" data-ga="cta_get_started">Оставить заявку</a>
       </div>
     </article>
 
@@ -150,7 +178,7 @@
           <p><strong>Что делаем:</strong> конверсионные одностраничники на Webflow/Tilda/чистом HTML.</p>
           <p><strong>Стек:</strong> Webflow CMS, HTML5, CSS3, GSAP.</p>
           <p><strong>Процесс:</strong> UX → разработка → оптимизация → A/B‑тесты.</p>
-          <a href="/ru/contact.html" class="btn-primary">Оставить заявку</a>
+          <a href="/ru/contact.html" class="btn-primary" data-ga="cta_get_started">Оставить заявку</a>
       </div>
     </article>
 
@@ -168,7 +196,7 @@
           <p><strong>Что делаем:</strong> генерация контента, аналитика, предиктивные модели.</p>
           <p><strong>Стек:</strong> Llama-3, LangChain, Pinecone, AWS.</p>
           <p><strong>Процесс:</strong> сбор данных → дообучение → интеграция → мониторинг.</p>
-          <a href="/ru/contact.html" class="btn-primary">Оставить заявку</a>
+          <a href="/ru/contact.html" class="btn-primary" data-ga="cta_get_started">Оставить заявку</a>
       </div>
     </article>
   </section>

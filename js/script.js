@@ -1,6 +1,9 @@
 // Etern8 Tech — unified header/lang/form script
 
 document.addEventListener('DOMContentLoaded', () => {
+  // Increase chance for good LCP
+  const heroImg = document.querySelector('.hero img');
+  if (heroImg) heroImg.setAttribute('fetchpriority', 'high');
   // --- Language switcher active state ---
   const isRU = location.pathname.startsWith('/ru/');
   document.querySelectorAll('.language-switcher .lang').forEach(a => {
@@ -76,6 +79,14 @@ document.addEventListener('DOMContentLoaded', () => {
         notice.textContent = isRU
           ? 'Спасибо! Ответим в течение 24 часов.'
           : 'Thanks! We’ll reply within 24 hours.';
+        if (window.gtag) {
+          gtag('event', 'generate_lead', {
+            event_category: 'form',
+            event_label: window.location.pathname,
+            value: 1,
+            currency: 'USD'
+          });
+        }
         form.reset();
       } catch (err) {
         console.error(err);
@@ -88,4 +99,15 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     });
   }
+});
+
+document.addEventListener('click', e => {
+  const a = e.target.closest('[data-ga]');
+  if (!a || !window.gtag) return;
+  const name = a.getAttribute('data-ga');
+  gtag('event', name, {
+    event_category: 'cta',
+    event_label: location.pathname,
+    value: 1
+  });
 });

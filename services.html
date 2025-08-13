@@ -3,6 +3,12 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <!-- Preconnects -->
+  <link rel="preconnect" href="https://www.googletagmanager.com" crossorigin>
+  <link rel="preconnect" href="https://www.google-analytics.com" crossorigin>
+
+  <!-- Preload Hero Image -->
+  <link rel="preload" as="image" href="/assets/hero-bg.jpg" fetchpriority="high">
   <!-- Primary SEO -->
   <title>Services — Etern8 Tech</title>
   <meta name="description" content="App development, web development, AI integration, and design services to launch fast.">
@@ -91,13 +97,35 @@
   ]
   }
   </script>
+
+  <!-- Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-KQYJ1N0XLL"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){ dataLayer.push(arguments); }
+
+    // Consent Mode (минимальный вариант; если нет баннера — оставь granted)
+    gtag('consent', 'default', {
+      ad_storage: 'denied',
+      ad_user_data: 'denied',
+      ad_personalization: 'denied',
+      analytics_storage: 'granted'
+    });
+
+    gtag('js', new Date());
+    gtag('config', 'G-KQYJ1N0XLL', {
+      send_page_view: true,
+      anonymize_ip: true,
+      debug_mode: false
+    });
+  </script>
 </head>
 <body>
   <!-- Header -->
   <header class="site-header">
     <div class="container header-inner">
       <a href="/index.html" class="logo-link" aria-label="Etern8 Tech">
-        <img src="/assets/etern8_logo.png" alt="Etern8 Tech logo" class="logo-img" width="140" height="40" decoding="async">
+        <img src="/assets/etern8_logo.png" alt="Etern8 Tech logo" class="logo-img" width="140" height="40" decoding="async" loading="lazy">
       </a>
       <button id="menu-toggle" class="burger" aria-label="Toggle menu" aria-expanded="false">☰</button>
       <nav class="site-nav" id="site-nav">
@@ -136,7 +164,7 @@
         <p><strong>What we do:</strong> Telegram/WhatsApp/Web chatbots, CRM integration, handoff to agent.</p>
         <p><strong>Tech stack:</strong> Node.js, Python, Dialogflow, GPT-4.</p>
         <p><strong>Process:</strong> Brief → Sprint 0 → Dev sprints → QA → Launch.</p>
-        <a href="contact.html" class="btn-primary">Get Started</a>
+        <a href="contact.html" class="btn-primary" data-ga="cta_get_started">Get Started</a>
       </div>
     </article>
 
@@ -151,7 +179,7 @@
         <p><strong>What we do:</strong> High-converting one-pagers on Webflow/Tilda/custom HTML.</p>
         <p><strong>Tech stack:</strong> Webflow CMS, HTML5, CSS3, GSAP.</p>
         <p><strong>Process:</strong> UX → Dev → Optimization → A/B testing.</p>
-        <a href="contact.html" class="btn-primary">Get Started</a>
+        <a href="contact.html" class="btn-primary" data-ga="cta_get_started">Get Started</a>
       </div>
     </article>
 
@@ -169,7 +197,7 @@
         <p><strong>What we do:</strong> Content generation, analytics, predictive models.</p>
         <p><strong>Tech stack:</strong> Llama-3, LangChain, Pinecone, AWS.</p>
         <p><strong>Process:</strong> Data intake → fine-tuning → integration → monitoring.</p>
-        <a href="contact.html" class="btn-primary">Get Started</a>
+        <a href="contact.html" class="btn-primary" data-ga="cta_get_started">Get Started</a>
       </div>
     </article>
   </section>
