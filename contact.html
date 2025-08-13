@@ -3,22 +3,58 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <!-- Primary SEO -->
   <title>Contact — Etern8 Tech</title>
   <meta name="description" content="Get in touch via email or Telegram. We'll reply within 24 hours." />
-  <meta property="og:title" content="Contact — Etern8 Tech" />
-  <meta property="og:description" content="Email hello@etern8.tech or Telegram @etern8_bot." />
-  <meta property="og:type" content="website" />
-  <meta property="og:image" content="/assets/og.png" />
-  <meta property="og:url" content="https://etern8.tech/contact.html" />
 
-  <!-- Hreflang -->
+  <!-- Canonical & hreflang -->
   <link rel="canonical" href="https://etern8.tech/contact.html" />
-  <link rel="alternate" hreflang="en" href="https://etern8.tech/contact.html" />
-  <link rel="alternate" hreflang="ru" href="https://etern8.tech/ru/contact.html" />
-  <link rel="alternate" hreflang="x-default" href="https://etern8.tech/contact.html" />
+  <link rel="alternate" href="https://etern8.tech/contact.html" hreflang="en" />
+  <link rel="alternate" href="https://etern8.tech/ru/contact.html" hreflang="ru" />
+  <link rel="alternate" href="https://etern8.tech/contact.html" hreflang="x-default" />
+
+  <!-- OpenGraph -->
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Etern8 Tech">
+  <meta property="og:title" content="Contact — Etern8 Tech">
+  <meta property="og:description" content="Email hello@etern8.tech or Telegram @etern8_bot.">
+  <meta property="og:url" content="https://etern8.tech/contact.html">
+  <meta property="og:image" content="https://etern8.tech/assets/og/og-contact.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+
+  <!-- Twitter -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Contact — Etern8 Tech">
+  <meta name="twitter:description" content="Email hello@etern8.tech or Telegram @etern8_bot.">
+  <meta name="twitter:image" content="https://etern8.tech/assets/og/og-contact.png">
 
   <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml" />
   <link rel="stylesheet" href="/css/styles.css" />
+
+  <script type="application/ld+json">
+  {
+  "@context":"https://schema.org",
+  "@type":"Organization",
+  "name":"Etern8 Tech",
+  "url":"https://etern8.tech",
+  "logo":"https://etern8.tech/assets/logo.svg",
+  "email":"hello@etern8.tech",
+  "sameAs":[
+    "https://t.me/etern8_bot"
+  ]
+  }
+  </script>
+  <script type="application/ld+json">
+  {
+  "@context":"https://schema.org",
+  "@type":"BreadcrumbList",
+  "itemListElement":[
+    {"@type":"ListItem","position":1,"name":"Home","item":"https://etern8.tech/"},
+    {"@type":"ListItem","position":2,"name":"Contact","item":"https://etern8.tech/contact.html"}
+  ]
+  }
+  </script>
 </head>
 <body>
   <header class="site-header">
@@ -32,7 +68,7 @@
           <li><a href="/index.html">Home</a></li>
           <li><a href="/services.html">Services</a></li>
           <li><a href="/why.html">Why Etern8</a></li>
-          <li><a href="/cases.html">Portfolio</a></li>
+          <li><a href="/portfolio.html">Portfolio</a></li>
           <li><a href="/about.html">About Us</a></li>
           <li><a href="/contact.html">Contact</a></li>
         </ul>
