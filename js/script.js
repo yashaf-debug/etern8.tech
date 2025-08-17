@@ -5,10 +5,13 @@ document.addEventListener('DOMContentLoaded', () => {
   const heroImg = document.querySelector('.hero img');
   if (heroImg) heroImg.setAttribute('fetchpriority', 'high');
   // --- Language switcher active state ---
-  const isRU = location.pathname.startsWith('/ru/');
+  const path = location.pathname;
+  const currentLang = path.startsWith('/ru/') ? 'ru'
+    : path.startsWith('/ar/') ? 'ar'
+    : 'en';
   document.querySelectorAll('.language-switcher .lang').forEach(a => {
-    const t = a.textContent.trim();
-    a.classList.toggle('active', (isRU && t === 'RU') || (!isRU && t === 'EN'));
+    const t = a.textContent.trim().toLowerCase();
+    a.classList.toggle('active', t === currentLang);
   });
 
   // --- Burger toggle ---
@@ -29,7 +32,7 @@ document.addEventListener('DOMContentLoaded', () => {
     a.replaceWith(a.textContent || '');
   });
 
-  // --- Brief form handler (EN + RU) ---
+  // --- Brief form handler (EN + RU + AR) ---
   const form = document.getElementById('brief-form');
   if (form) {
     // не даём браузеру идти по action
@@ -76,9 +79,12 @@ document.addEventListener('DOMContentLoaded', () => {
         if (!res.ok) throw new Error('Bad status ' + res.status);
 
         notice.style.color = '#2e7d32';
-        notice.textContent = isRU
-          ? 'Спасибо! Ответим в течение 24 часов.'
-          : 'Thanks! We’ll reply within 24 hours.';
+        const successMsgs = {
+          en: 'Thanks! We\u2019ll reply within 24 hours.',
+          ru: 'Спасибо! Ответим в течение 24 часов.',
+          ar: 'شكرًا! سنرد خلال 24 ساعة.'
+        };
+        notice.textContent = successMsgs[currentLang];
         if (window.gtag) {
           gtag('event', 'generate_lead', {
             event_category: 'form',
@@ -91,9 +97,12 @@ document.addEventListener('DOMContentLoaded', () => {
       } catch (err) {
         console.error(err);
         notice.style.color = '#c62828';
-        notice.textContent = isRU
-          ? 'Ошибка. Попробуйте ещё раз или напишите hello@etern8.tech.'
-          : 'Oops. Please try again or email hello@etern8.tech.';
+        const errorMsgs = {
+          en: 'Oops. Please try again or email hello@etern8.tech.',
+          ru: 'Ошибка. Попробуйте ещё раз или напишите hello@etern8.tech.',
+          ar: 'حدث خطأ. حاول مرة أخرى أو أرسل بريدًا إلى hello@etern8.tech.'
+        };
+        notice.textContent = errorMsgs[currentLang];
       } finally {
         if (submitBtn) submitBtn.disabled = false;
       }
