@@ -189,3 +189,23 @@ html[lang="ar"] ol {
   padding-right: 1.2rem;
   padding-left: 0;
 }
+
+/* --- Emoji fallback fonts (global) --- */
+:root{
+  --emoji-fonts: 'Apple Color Emoji','Segoe UI Emoji','Segoe UI Symbol','Noto Color Emoji','Twemoji Mozilla','EmojiOne Color',sans-serif;
+}
+
+/* Арабская типографика + emoji fallback на всём сайте */
+html[lang="ar"] body{
+  /* оставь твой первый арабский шрифт, затем system-ui, затем emoji */
+  font-family: "Cairo","IBM Plex Sans Arabic","Noto Naskh Arabic",system-ui,-apple-system,"Segoe UI","Roboto","Helvetica Neue",Arial,var(--emoji-fonts);
+}
+
+/* Явно для контейнеров с иконками */
+.icon, .tile .icon, .service-card .icon, .step .icon, .card-icon{
+  font-family: var(--emoji-fonts);
+  font-size: 28px;      /* адаптируй под дизайн */
+  line-height: 1;
+  display:inline-block;
+  vertical-align:middle;
+}
