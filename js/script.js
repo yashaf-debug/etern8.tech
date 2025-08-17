@@ -1,19 +1,23 @@
 // Etern8 Tech — unified header/lang/form script
 
+const p = location.pathname;
+const isRU = p.startsWith('/ru/');
+const isAR = p.startsWith('/ar/');
+const currentLang = isRU ? 'ru' : isAR ? 'ar' : 'en';
+
+// Language switcher: подсвечиваем активный EN/RU/AR
+(function () {
+  document.querySelectorAll('.language-switcher .lang').forEach(a => {
+    const t = a.textContent.trim();
+    a.classList.toggle('active',
+      (isRU && t === 'RU') || (isAR && t === 'AR') || (!isRU && !isAR && t === 'EN')
+    );
+  });
+})();
 document.addEventListener('DOMContentLoaded', () => {
   // Increase chance for good LCP
   const heroImg = document.querySelector('.hero img');
   if (heroImg) heroImg.setAttribute('fetchpriority', 'high');
-  // --- Language switcher active state ---
-  const path = location.pathname;
-  const currentLang = path.startsWith('/ru/') ? 'ru'
-    : path.startsWith('/ar/') ? 'ar'
-    : 'en';
-  document.querySelectorAll('.language-switcher .lang').forEach(a => {
-    const t = a.textContent.trim().toLowerCase();
-    a.classList.toggle('active', t === currentLang);
-  });
-
   // --- Burger toggle ---
   const burger = document.getElementById('menu-toggle');
   const nav = document.getElementById('site-nav');

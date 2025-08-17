@@ -162,3 +162,30 @@ a:hover{color:var(--primary-dark)}
 .derisk{padding:1rem 0 2.5rem}
 .derisk ul{margin:.5rem 0 0 1.2rem}
 .case-cards,.tiles-row,.testimonials{content-visibility:auto;contain-intrinsic-size:1000px}
+
+/* === RTL support === */
+html[lang="ar"] body {
+  direction: rtl;
+  text-align: right;
+  font-family: system-ui, -apple-system, "Segoe UI", "Noto Sans Arabic", "Tajawal", "Cairo", Arial, sans-serif;
+}
+
+html[lang="ar"] .site-header .header-inner,
+html[lang="ar"] .container {
+  direction: rtl;
+}
+
+html[lang="ar"] .nav-links li {
+  margin-left: 0;
+  margin-right: 18px;
+}
+
+html[lang="ar"] .language-switcher {
+  direction: ltr; /* чтобы EN/RU/AR шли привычно */
+}
+
+html[lang="ar"] ul,
+html[lang="ar"] ol {
+  padding-right: 1.2rem;
+  padding-left: 0;
+}
